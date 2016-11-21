@@ -9,17 +9,20 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_current" />
+        android:text="@string/button_current"
+        android:onClick="showCurrent"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_scan" />
+        android:text="@string/button_scan"
+        android:onClick="scan"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/button_database" />
+        android:text="@string/button_database"
+        android:onClick="showDatabase"/>
 
 
 </LinearLayout>
