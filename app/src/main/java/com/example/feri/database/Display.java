@@ -1,6 +1,5 @@
 package com.example.feri.database;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -113,7 +112,7 @@ public class Display extends AppCompatActivity{
                                 db.deleteContact(id_update);
                                 Toast.makeText(getApplicationContext(), "Vymazanie uspesne",Toast.LENGTH_SHORT).show();
 
-                                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                Intent intent = new Intent(getApplicationContext(),OLDMainActivity.class);
                                 startActivity(intent);
                             }
                         })
@@ -143,7 +142,7 @@ public class Display extends AppCompatActivity{
             if(value>0) {
                 if(db.updateContant(id_update,polozka1.getText().toString(),polozka2.getText().toString())){
                     Toast.makeText(getApplicationContext(),"Updated",Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    Intent intent = new Intent(getApplicationContext(),OLDMainActivity.class);
                     startActivity(intent);
                 }
                 else{
@@ -157,7 +156,7 @@ public class Display extends AppCompatActivity{
                 else {
                     Toast.makeText(getApplicationContext(),"not done", Toast.LENGTH_SHORT).show();
                 }
-                Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(),OLDMainActivity.class);
                 startActivity(intent);
             }
         }

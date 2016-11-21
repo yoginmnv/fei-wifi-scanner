@@ -15,12 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".Display" />
-
-
-
-
+        <activity android:name=".ShowDatabaseTree" />
+        <activity android:name=".ViewActivity" />
+        <activity android:name=".OLDMainActivity"></activity>
     </application>
 
 </manifest>

@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">Database</string>
+    <string name="app_name">FeiWifiScanner</string>
+    <string name="edit_message">Edit message</string>
+    <string name="button_current">Ukáž aktuálnu polohu</string>
+    <string name="button_scan">Sken siete</string>
+    <string name="button_database">Databáza</string>
+
 </resources>
