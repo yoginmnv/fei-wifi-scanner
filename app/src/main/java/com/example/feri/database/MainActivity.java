@@ -26,6 +26,11 @@ public class MainActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        //
+        CurrentLocation currentLocation = new CurrentLocation();
+
+        getSupportFragmentManager().beginTransaction().add(R.id.frame1,currentLocation).commit();
     }
 
     public void showCurrent(View view) {
