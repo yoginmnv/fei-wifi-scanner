@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.feri.sqlitedemo">
+    package="wifi.mobv.fei.stuba.sk.wifiscanner">
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:allowBackup="true"
@@ -16,14 +19,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.feri.sqlitedemo.Add_member"
+        <activity android:name=".view.AddWifi"
             android:label="@string/app_name">
         </activity>
 
-        <activity android:name=".Modify_member"
+        <activity android:name=".view.UpdateWifi"
             android:label="@string/app_name">
         </activity>
-
     </application>
 
 </manifest>
