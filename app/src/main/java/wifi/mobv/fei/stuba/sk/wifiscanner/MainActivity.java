@@ -14,8 +14,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
-import wifi.mobv.fei.stuba.sk.wifiscanner.view.AddWifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
+import wifi.mobv.fei.stuba.sk.wifiscanner.view.AddWifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.UpdateWifi;
 
 public class MainActivity extends AppCompatActivity {
