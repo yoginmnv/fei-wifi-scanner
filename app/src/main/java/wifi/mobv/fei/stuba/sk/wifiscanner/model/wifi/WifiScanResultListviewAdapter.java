@@ -1,4 +1,4 @@
-package wifi.mobv.fei.stuba.sk.wifiscanner.controller;
+package wifi.mobv.fei.stuba.sk.wifiscanner.model.wifi;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -18,20 +18,16 @@ import wifi.mobv.fei.stuba.sk.wifiscanner.view.ScanWifiActivity;
  * Created by Patrik on 1.12.2016.
  */
 
-public class WifiScanResultListviewAdapter extends BaseAdapter implements View.OnClickListener{
-    private ScanWifiActivity activity;
+public class WifiScanResultListviewAdapter extends BaseAdapter {
     private List<ScanResult> wifiList;
-    private static LayoutInflater inflater = null;
-    public Resources resoruces;
+    private static LayoutInflater inflater;
 
-    public WifiScanResultListviewAdapter(ScanWifiActivity actvt, List<ScanResult> data, Resources res)
+    public WifiScanResultListviewAdapter(ScanWifiActivity activity, List<ScanResult> data)
     {
-        // Set values
-        activity = actvt;
+        // Set the data
         wifiList = data;
-        resoruces = res;
 
-        // Layout inflater
+        // Inflate layout
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -59,32 +55,32 @@ public class WifiScanResultListviewAdapter extends BaseAdapter implements View.O
     // Function to create rows
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        View view = convertView;
-
         ViewHolder viewHolder;
 
         if (convertView == null) {
             // Inflate view for row
-            view = inflater.inflate(R.layout.wifi_scan_listview_row, null);
+            convertView = inflater.inflate(R.layout.wifi_scan_listview_row, null);
 
             // Create Viewholder object which contains row elements
             viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView)view.findViewById(R.id.WifiScanText_id);
+            viewHolder.textView = (TextView)convertView.findViewById(R.id.WifiScanText_id);
 
-            view.setTag(viewHolder);
+            convertView.setTag(viewHolder);
         }
         else
         {
-            viewHolder = (ViewHolder)view.getTag();
+            viewHolder = (ViewHolder)convertView.getTag();
         }
 
         ScanResult scanResult = wifiList.get(position);
         viewHolder.textView.setText(scanResult.toString());
 
-        return view;
+        return convertView;
     }
-    @Override
-    public void onClick(View view) {
 
+    public void updateList(List<ScanResult> list)
+    {
+        wifiList = list;
+        this.notifyDataSetChanged();
     }
 }

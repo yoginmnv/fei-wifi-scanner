@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(modify_intent);
             }
         });
+
         startScanBtn = (Button)findViewById(R.id.start_scan_btn);
         startScanBtn.setOnClickListener(new OnClickListener() {
             @Override
