@@ -46,7 +46,6 @@ public class WifiScanner {
         }
 
         receiverWifi = new WifiScanReceiver();
-        scanWifiActivity.registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 
 //        runnable = new Runnable()
 //        {
@@ -98,6 +97,7 @@ public class WifiScanner {
 
     public void startScan() {
         System.out.println("Wi-Fi scan started...");
+        scanWifiActivity.registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         wifiManager.startScan();
     }
 
@@ -109,7 +109,7 @@ public class WifiScanner {
     class WifiScanReceiver extends BroadcastReceiver {
         public void onReceive(Context c, Intent intent) {
             System.out.println("Scans received");
-            Toast.makeText(scanWifiActivity, "Wi-Fi scans were received", Toast.LENGTH_SHORT).show();
+            Toast.makeText(scanWifiActivity, wifiList.isEmpty() ? "Wi-Fi scans received" : "Wi-Fi scans updated", Toast.LENGTH_SHORT).show();
 
             wifiList = wifiManager.getScanResults();
 
