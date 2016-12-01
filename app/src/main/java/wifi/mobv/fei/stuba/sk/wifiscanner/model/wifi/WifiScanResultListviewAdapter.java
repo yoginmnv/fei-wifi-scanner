@@ -49,7 +49,11 @@ public class WifiScanResultListviewAdapter extends BaseAdapter {
     // Viewholder class for data
     public static class ViewHolder
     {
-        public TextView textView;
+        // SSID
+        public TextView textViewSSID;
+
+        // BSSID
+        public TextView textViewBSSID;
     }
 
     // Function to create rows
@@ -63,7 +67,8 @@ public class WifiScanResultListviewAdapter extends BaseAdapter {
 
             // Create Viewholder object which contains row elements
             viewHolder = new ViewHolder();
-            viewHolder.textView = (TextView)convertView.findViewById(R.id.WifiScanText_id);
+            viewHolder.textViewSSID = (TextView)convertView.findViewById(R.id.WifiScanTextSSID);
+            viewHolder.textViewBSSID = (TextView)convertView.findViewById(R.id.WifiScanTextBSSID);
 
             convertView.setTag(viewHolder);
         }
@@ -72,8 +77,11 @@ public class WifiScanResultListviewAdapter extends BaseAdapter {
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
+        // Get the result from list
         ScanResult scanResult = wifiList.get(position);
-        viewHolder.textView.setText(scanResult.toString());
+
+        viewHolder.textViewSSID.setText("SSID: " + scanResult.SSID);
+        viewHolder.textViewBSSID.setText("BSSID: " + scanResult.BSSID);
 
         return convertView;
     }

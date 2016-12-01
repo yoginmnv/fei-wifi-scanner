@@ -21,6 +21,6 @@
         android:id="@+id/start_scan_btn"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Start scan" />
+        android:text="Zobraziť Wi-Fi siete v okolí" />
 
 </LinearLayout>
