@@ -111,7 +111,7 @@ public class WifiScanner {
     {
         public void onReceive(Context c, Intent intent)
         {
-            System.out.println("");
+            System.out.println("Received scans");
             ArrayList<String> connections = new ArrayList<String>();
             wifiList = wifiManager.getScanResults(); // ACCESS_WIFI_STATE
 

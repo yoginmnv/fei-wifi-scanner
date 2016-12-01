@@ -28,6 +28,10 @@
         <activity android:name=".view.UpdateWifi"
             android:label="@string/app_name">
         </activity>
+
+        <activity android:name=".view.ScanWifiActivity"
+            android:label="WifiScanner">
+        </activity>
     </application>
 
 </manifest>

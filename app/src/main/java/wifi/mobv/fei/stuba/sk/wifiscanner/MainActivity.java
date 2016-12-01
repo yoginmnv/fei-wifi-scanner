@@ -16,11 +16,13 @@ import android.widget.TextView;
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.AddWifi;
+import wifi.mobv.fei.stuba.sk.wifiscanner.view.ScanWifiActivity;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.UpdateWifi;
 
 public class MainActivity extends AppCompatActivity {
 
     Button addmem_bt;
+    Button startScanBtn;
     ListView lv;
     SQLController dbcon;
     TextView memID_tv, memBlok_tv, memMac_tv;
@@ -73,6 +75,14 @@ public class MainActivity extends AppCompatActivity {
                 modify_intent.putExtra("memberBlok",cursor.getString(5));
 
                 startActivity(modify_intent);
+            }
+        });
+        startScanBtn = (Button)findViewById(R.id.start_scan_btn);
+        startScanBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ScanWifiActivity.class);
+                startActivity(intent);
             }
         });
     }

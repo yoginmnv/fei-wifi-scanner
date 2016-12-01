@@ -17,4 +17,10 @@
         android:dividerHeight="2dp" >
     </ListView>
 
+    <Button
+        android:id="@+id/start_scan_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Start scan" />
+
 </LinearLayout>
