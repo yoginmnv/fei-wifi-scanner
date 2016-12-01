@@ -42,7 +42,7 @@ public class WifiScanner {
             // If is wifi disabled, enable it
             wifiManager.setWifiEnabled(true);
 
-            Toast.makeText(scanWifiActivity, "WiFi was enabled", Toast.LENGTH_LONG).show();
+            Toast.makeText(scanWifiActivity, "Wi-Fi was enabled", Toast.LENGTH_SHORT).show();
         }
 
         receiverWifi = new WifiScanReceiver();
@@ -108,9 +108,10 @@ public class WifiScanner {
 
     class WifiScanReceiver extends BroadcastReceiver {
         public void onReceive(Context c, Intent intent) {
-            System.out.println("Received scans");
-            ArrayList<String> connections = new ArrayList<String>();
-            wifiList = wifiManager.getScanResults(); // ACCESS_WIFI_STATE
+            System.out.println("Scans received");
+            Toast.makeText(scanWifiActivity, "Wi-Fi scans were received", Toast.LENGTH_SHORT).show();
+
+            wifiList = wifiManager.getScanResults();
 
             ListView listView = (ListView) scanWifiActivity.findViewById(R.id.wifiScanListViewId);
             ((WifiScanResultListviewAdapter) listView.getAdapter()).updateList(wifiList);
