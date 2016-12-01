@@ -52,8 +52,7 @@ public class AddWifi extends AppCompatActivity implements OnClickListener {
 
                 dbcon.insertData(ssid_new, bssid_new, signal_new, poschodie_new, blok_new);
 
-                Intent main = new Intent(AddWifi.this, MainActivity.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Intent main = new Intent(AddWifi.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(main);
                 break;
 

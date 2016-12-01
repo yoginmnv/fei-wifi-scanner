@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">WifiScanner</string>
+    <string name="dao_create">Create</string>
+    <string name="location_block">Name of the block</string>
+    <string name="location_floor">Floor number</string>
 </resources>

@@ -7,6 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.WifiDAO;
 
 /**
  * Created by Feri on 25.11.2016.
@@ -23,7 +25,7 @@ public class SQLController {
     }
 
     public SQLController open() throws SQLException {
-        dbhelper = new DBHelper(ourcontext);
+        dbhelper = DBHelper.getInstance(ourcontext);
         database = dbhelper.getWritableDatabase();
         return this;
 
@@ -35,20 +37,18 @@ public class SQLController {
 
     public void insertData(String ssid, String bssid, String max_signal, String poschodie, String blok) {
         ContentValues cv = new ContentValues();
-        cv.put(DBHelper.SSID,ssid);
-        cv.put(DBHelper.BSSID,bssid);
-        cv.put(DBHelper.MAX_SIGNAL,max_signal);
-        cv.put(DBHelper.POSCHODIE, poschodie);
-        cv.put(DBHelper.BLOK, blok);
+        cv.put(WifiDAO.WifiEntry.COLUMN_NAME_SSID,ssid);
+        cv.put(WifiDAO.WifiEntry.COLUMN_NAME_BSSID,bssid);
+        cv.put(WifiDAO.WifiEntry.COLUMN_NAME_MAX_LEVEL,max_signal);
+//        cv.put(DBHelper.POSCHODIE, poschodie);
+//        cv.put(DBHelper.BLOK, blok);
 
-        database.insert(DBHelper.TABLE_WIFI, null, cv);
+        database.insert(WifiDAO.WifiEntry.TABLE_NAME, null, cv);
     }
 
     public Cursor readData() {
-        String[] allColumns = new String[] { DBHelper.MEMBER_ID,
-                DBHelper.BLOK, DBHelper.BSSID};
-        Cursor c = database.query(DBHelper.TABLE_WIFI, allColumns, null,
-                null, null, null, null);
+        String[] allColumns = new String[] { WifiDAO.WifiEntry._ID,  WifiDAO.WifiEntry.COLUMN_NAME_ID_LOCATION, WifiDAO.WifiEntry.COLUMN_NAME_BSSID};
+        Cursor c = database.query(WifiDAO.WifiEntry.TABLE_NAME, allColumns, null, null, null, null, null);
         if (c != null) {
             c.moveToFirst();
         }
@@ -56,13 +56,12 @@ public class SQLController {
     }
 
     public Cursor readDataById(String member_ID) {
-        String whereClause = DBHelper.MEMBER_ID + " = ? ";
+        String whereClause = WifiDAO.WifiEntry._ID + " = ? ";
         String[] whereArgs = new String[] {
                 member_ID
         };
 
-        Cursor c = database.query(DBHelper.TABLE_WIFI, null, whereClause,
-                whereArgs, null, null, null);
+        Cursor c = database.query(WifiDAO.WifiEntry.TABLE_NAME, null, whereClause, whereArgs, null, null, null);
         if (c != null) {
             c.moveToFirst();
         }
@@ -72,9 +71,9 @@ public class SQLController {
 
     //vyhladavanie podla BLOKU a POSCHODIA
     public Cursor findDataByBlok(String blok, String poschodie){
-        String[] allColumns = new String[] {DBHelper.MEMBER_ID, DBHelper.BLOK, DBHelper.BSSID};
-        String[] podmienka = new String[] { DBHelper.BLOK + "=" +  blok + "AND " + DBHelper.POSCHODIE + "=" + poschodie };
-        Cursor c = database.query(DBHelper.TABLE_WIFI,allColumns,null,null,null,null,null);
+        String[] allColumns = new String[] {WifiDAO.WifiEntry._ID, WifiDAO.WifiEntry.COLUMN_NAME_ID_LOCATION, WifiDAO.WifiEntry.COLUMN_NAME_BSSID};
+        //String[] podmienka = new String[] { Wifi.WifiEntry.BLOK + "=" +  blok + "AND " + DBHelper.POSCHODIE + "=" + poschodie };
+        Cursor c = database.query(WifiDAO.WifiEntry.TABLE_NAME,allColumns,null,null,null,null,null);
 
         if (c != null) {
             c.moveToFirst();
@@ -86,20 +85,16 @@ public class SQLController {
     public int updateData(long memberID, String ssid, String bssid, String max_signal, String poschodie, String blok) {
         ContentValues cvUpdate = new ContentValues();
 
-        cvUpdate.put(DBHelper.SSID,ssid);
-        cvUpdate.put(DBHelper.BSSID,bssid);
-        cvUpdate.put(DBHelper.MAX_SIGNAL,max_signal);
-        cvUpdate.put(DBHelper.POSCHODIE, poschodie);
-        cvUpdate.put(DBHelper.BLOK, blok);
+        cvUpdate.put(WifiDAO.WifiEntry.COLUMN_NAME_SSID,ssid);
+        cvUpdate.put(WifiDAO.WifiEntry.COLUMN_NAME_BSSID,bssid);
+        cvUpdate.put(WifiDAO.WifiEntry.COLUMN_NAME_MAX_LEVEL,max_signal);
 
-        int i = database.update(DBHelper.TABLE_WIFI, cvUpdate,
-                DBHelper.MEMBER_ID + " = " + memberID, null);
+        int i = database.update(WifiDAO.WifiEntry.TABLE_NAME, cvUpdate, WifiDAO.WifiEntry._ID + " = " + memberID, null);
         return i;
     }
 
     public void deleteData(long memberID) {
-        database.delete(DBHelper.TABLE_WIFI, DBHelper.MEMBER_ID + "="
-                + memberID, null);
+        database.delete(WifiDAO.WifiEntry.TABLE_NAME, WifiDAO.WifiEntry.TABLE_NAME + "=" + memberID, null);
     }
 
 }

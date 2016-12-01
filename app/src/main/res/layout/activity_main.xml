@@ -4,6 +4,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp">
+
+    <Button
+        android:id="@+id/b_create_location"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Create location"
+        android:onClick="changeActivity"/>
+
     <Button
         android:id="@+id/addmem_bt_id"
         android:layout_width="fill_parent"

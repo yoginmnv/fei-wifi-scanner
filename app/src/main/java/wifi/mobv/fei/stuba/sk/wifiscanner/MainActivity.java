@@ -14,7 +14,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
-import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.WifiDAO;
+import wifi.mobv.fei.stuba.sk.wifiscanner.view.AddLocation;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.AddWifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.UpdateWifi;
 
@@ -29,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         dbcon = new SQLController(this);
         dbcon.open();
@@ -46,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Attach The Data From DataBase Into ListView Using Crusor Adapter
         Cursor cursor = dbcon.readData();
-        String[] from = new String[] { DBHelper.MEMBER_ID, DBHelper.BSSID};
+        String[] from = new String[] {WifiDAO.WifiEntry._ID, WifiDAO.WifiEntry.COLUMN_NAME_BSSID};
         int[] to = new int[] { R.id.member_id, R.id.member_BSSID };
 
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(MainActivity.this, R.layout.view_member_entry, cursor, from, to);
@@ -75,5 +78,22 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(modify_intent);
             }
         });
+    }
+
+    public void changeActivity(View view)
+    {
+        Intent intent = null;
+
+        switch( view.getId() )
+        {
+            case R.id.b_create_location:
+                intent = new Intent(MainActivity.this, AddLocation.class);
+                break;
+        }
+
+        if( intent != null )
+        {
+            startActivity(intent);
+        }
     }
 }
