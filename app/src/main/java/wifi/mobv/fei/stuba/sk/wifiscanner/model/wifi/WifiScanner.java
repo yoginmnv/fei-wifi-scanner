@@ -115,6 +115,10 @@ public class WifiScanner {
 
             List<ScanResult> scanResults = wifiManager.getScanResults();
 
+            // Delete old content
+            wifiList.clear();
+
+            // Add scans to list
             for (int i = 0; i < scanResults.size(); ++i) {
                 ScanResult res = scanResults.get(i);
                 WifiScan wifiScan = new WifiScan(res.SSID, res.BSSID);
@@ -125,8 +129,6 @@ public class WifiScanner {
 
             ListView listView = (ListView) scanWifiActivity.findViewById(R.id.wifiScanListViewId);
             ((WifiScanResultListviewAdapter) listView.getAdapter()).updateList(wifiList);
-
-
         }
     }
 
