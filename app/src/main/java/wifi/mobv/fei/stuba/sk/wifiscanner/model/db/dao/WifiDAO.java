@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
 
 /**
@@ -124,7 +125,7 @@ public class WifiDAO
 		return wifi;
 	}
 
-	public List<Wifi> locateMe(List<ScanResult> wifiList){
+	public Location locateMe(List<ScanResult> wifiList){
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		List<Wifi> wifi = new ArrayList<Wifi>();
 
@@ -162,8 +163,8 @@ public class WifiDAO
 
 		c = db.query(LocationDAO.LocationEntry.TABLE_NAME,null,whereClause,whereArgs,null,null,null);
 		c.moveToFirst();
-
-		return null;
+		
+		return new Location(c.getString(1),c.getString(2));
 	}
 
 //	public void updateWifi()
