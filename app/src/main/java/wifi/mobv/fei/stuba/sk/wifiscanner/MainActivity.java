@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Attach The Data From DataBase Into ListView Using Crusor Adapter
+        // Attach The Data From DataBase Into ListView Using Cursor Adapter
         Cursor cursor = dbcon.readData();
         String[] from = new String[] { DBHelper.MEMBER_ID, DBHelper.BSSID};
         int[] to = new int[] { R.id.member_id, R.id.member_BSSID };
@@ -70,14 +70,15 @@ public class MainActivity extends AppCompatActivity {
                 modify_intent.putExtra("memberID", memberID_val);
                 modify_intent.putExtra("memberSSID",cursor.getString(1));
                 modify_intent.putExtra("memberBSSID", cursor.getString(2));
-                modify_intent.putExtra("memberSignal",cursor.getString(3));
-                modify_intent.putExtra("memberPoschodie",cursor.getString(4));
-                modify_intent.putExtra("memberBlok",cursor.getString(5));
+//                modify_intent.putExtra("memberSignal",cursor.getString(3));
+//                modify_intent.putExtra("memberPoschodie",cursor.getString(4));
+//                modify_intent.putExtra("memberBlok",cursor.getString(5));
 
                 startActivity(modify_intent);
             }
         });
 
+        // Button to start activity which scans Wi-Fi networks
         startScanBtn = (Button)findViewById(R.id.start_scan_btn);
         startScanBtn.setOnClickListener(new OnClickListener() {
             @Override

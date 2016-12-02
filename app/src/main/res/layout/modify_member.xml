@@ -26,35 +26,35 @@
         <requestFocus />
     </EditText>
 
-    <EditText
-        android:id="@+id/signal_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="max. signal">
+    <!--<EditText-->
+        <!--android:id="@+id/signal_edit"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="10"-->
+        <!--android:hint="max. signal">-->
 
-        <requestFocus />
-    </EditText>
+        <!--<requestFocus />-->
+    <!--</EditText>-->
 
-    <EditText
-        android:id="@+id/poschodie_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="poschodie">
+    <!--<EditText-->
+        <!--android:id="@+id/poschodie_edit"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="10"-->
+        <!--android:hint="poschodie">-->
 
-        <requestFocus />
-    </EditText>
+        <!--<requestFocus />-->
+    <!--</EditText>-->
 
-    <EditText
-        android:id="@+id/blok_edit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="blok">
+    <!--<EditText-->
+        <!--android:id="@+id/blok_edit"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:ems="10"-->
+        <!--android:hint="blok">-->
 
-        <requestFocus />
-    </EditText>
+        <!--<requestFocus />-->
+    <!--</EditText>-->
 
     <LinearLayout
         android:layout_width="match_parent"

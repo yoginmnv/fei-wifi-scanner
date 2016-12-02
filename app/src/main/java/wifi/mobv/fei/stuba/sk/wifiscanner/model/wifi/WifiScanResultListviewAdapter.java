@@ -1,8 +1,6 @@
 package wifi.mobv.fei.stuba.sk.wifiscanner.model.wifi;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.net.wifi.ScanResult;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +17,10 @@ import wifi.mobv.fei.stuba.sk.wifiscanner.view.ScanWifiActivity;
  */
 
 public class WifiScanResultListviewAdapter extends BaseAdapter {
-    private List<ScanResult> wifiList;
+    private List<WifiScan> wifiList;
     private static LayoutInflater inflater;
 
-    public WifiScanResultListviewAdapter(ScanWifiActivity activity, List<ScanResult> data)
+    public WifiScanResultListviewAdapter(ScanWifiActivity activity, List<WifiScan> data)
     {
         // Set the data
         wifiList = data;
@@ -36,7 +34,7 @@ public class WifiScanResultListviewAdapter extends BaseAdapter {
         return wifiList.size();
     }
 
-    public ScanResult getItem(int position)
+    public WifiScan getItem(int position)
     {
         return wifiList.get(position);
     }
@@ -78,15 +76,15 @@ public class WifiScanResultListviewAdapter extends BaseAdapter {
         }
 
         // Get the result from list
-        ScanResult scanResult = wifiList.get(position);
+        WifiScan wifiScan = wifiList.get(position);
 
-        viewHolder.textViewSSID.setText("SSID: " + scanResult.SSID);
-        viewHolder.textViewBSSID.setText("BSSID: " + scanResult.BSSID);
+        viewHolder.textViewSSID.setText("SSID: " + wifiScan.SSID);
+        viewHolder.textViewBSSID.setText("BSSID: " + wifiScan.BSSID);
 
         return convertView;
     }
 
-    public void updateList(List<ScanResult> list)
+    public void updateList(List<WifiScan> list)
     {
         wifiList = list;
         this.notifyDataSetChanged();

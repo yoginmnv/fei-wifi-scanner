@@ -28,16 +28,18 @@ public class WifiScanner {
 
     private WifiManager wifiManager;
     private WifiScanReceiver receiverWifi;
-    private List<ScanResult> wifiList = new ArrayList<ScanResult>();
+    private List<WifiScan> wifiList;
     private Activity scanWifiActivity;
 
     public WifiScanner(Activity activity) {
         scanWifiActivity = activity;
+        wifiList = new ArrayList<>();
 //        handler = new Handler();
-        // manage all aspects of WIFI connectivity
+
+        // Manage all aspects of WIFI connectivity
         wifiManager = (WifiManager) scanWifiActivity.getSystemService(Context.WIFI_SERVICE);
 
-        // enable automatic wifi
+        // Automatic enable Wi-Fi
         if (wifiManager.isWifiEnabled() == false) {
             // If is wifi disabled, enable it
             wifiManager.setWifiEnabled(true);
@@ -111,15 +113,20 @@ public class WifiScanner {
             System.out.println("Scans received");
             Toast.makeText(scanWifiActivity, wifiList.isEmpty() ? "Wi-Fi scans received" : "Wi-Fi scans updated", Toast.LENGTH_SHORT).show();
 
-            wifiList = wifiManager.getScanResults();
+            List<ScanResult> scanResults = wifiManager.getScanResults();
+
+            for (int i = 0; i < scanResults.size(); ++i) {
+                ScanResult res = scanResults.get(i);
+                WifiScan wifiScan = new WifiScan(res.SSID, res.BSSID);
+
+                System.out.println(wifiScan.SSID + " - " + wifiScan.BSSID );
+                wifiList.add(wifiScan);
+            }
 
             ListView listView = (ListView) scanWifiActivity.findViewById(R.id.wifiScanListViewId);
             ((WifiScanResultListviewAdapter) listView.getAdapter()).updateList(wifiList);
 
-            for (int i = 0; i < wifiList.size(); ++i) {
-                ScanResult res = wifiList.get(i);
-                System.out.println(res.SSID + " - " + res.BSSID + " - " + res.level);
-            }
+
         }
     }
 
@@ -162,7 +169,7 @@ public class WifiScanner {
 //        }
 //    }
 
-    public List<ScanResult> getWifiList() {
+    public List<WifiScan> getWifiList() {
         return wifiList;
     }
 }

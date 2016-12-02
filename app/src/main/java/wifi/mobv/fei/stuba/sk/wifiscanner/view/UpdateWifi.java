@@ -36,9 +36,9 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener {
 
         ssid = (EditText) findViewById(R.id.SSID_edit);
         bssid = (EditText) findViewById(R.id.BSSID_edit);
-        signal = (EditText) findViewById(R.id.signal_edit);
-        poschodie = (EditText) findViewById(R.id.poschodie_edit);
-        blok = (EditText) findViewById(R.id.blok_edit);
+//        signal = (EditText) findViewById(R.id.signal_edit);
+//        poschodie = (EditText) findViewById(R.id.poschodie_edit);
+//        blok = (EditText) findViewById(R.id.blok_edit);
 
         edit_bt = (Button) findViewById(R.id.update_bt_id);
         delete_bt = (Button) findViewById(R.id.delete_bt_id);
@@ -48,9 +48,9 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener {
 
         String memberSSID = i.getStringExtra("memberSSID");
         String memberBSSID = i.getStringExtra("memberBSSID");
-        String memberSignal = i.getStringExtra("memberSignal");
-        String memberPoschodie = i.getStringExtra("memberPoschodie");
-        String memberBlok = i.getStringExtra("memberBlok");
+//        String memberSignal = i.getStringExtra("memberSignal");
+//        String memberPoschodie = i.getStringExtra("memberPoschodie");
+//        String memberBlok = i.getStringExtra("memberBlok");
 
 
         member_id = Long.parseLong(memberID);
@@ -58,11 +58,11 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener {
 
         ssid.setText(memberSSID);
         bssid.setText(memberBSSID);
-        signal.setText(memberSignal);
-        poschodie.setText(memberPoschodie);
-        blok.setText(memberBlok);
-
-        blok.setText(memberBlok);
+//        signal.setText(memberSignal);
+//        poschodie.setText(memberPoschodie);
+//        blok.setText(memberBlok);
+//
+//        blok.setText(memberBlok);
 
 
         edit_bt.setOnClickListener(this);
@@ -76,11 +76,12 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener {
                 String bssid_upd = bssid.getText().toString();
                 String ssid_upd = ssid.getText().toString();
 
-                String signal_upd = signal.getText().toString();
-                String poschodie_upd = poschodie.getText().toString();
-                String blok_upd = blok.getText().toString();
+//                String signal_upd = signal.getText().toString();
+//                String poschodie_upd = poschodie.getText().toString();
+//                String blok_upd = blok.getText().toString();
 
-                dbcon.updateData(member_id,ssid_upd,bssid_upd,signal_upd,poschodie_upd,blok_upd);
+                dbcon.updateData(member_id,ssid_upd,bssid_upd,"","","");
+//                dbcon.updateData(member_id,ssid_upd,bssid_upd,signal_upd,poschodie_upd,blok_upd);
                 this.returnHome();
                 break;
 

@@ -1,68 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp" >
 
+    <TextView
+        android:id="@+id/AddWifiLabelSSID"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:text="SSID:"
+        android:gravity="center"/>
+
     <EditText
         android:id="@+id/SSID_new"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/AddWifiLabelSSID"
         android:ems="10"
-        android:layout_marginTop="40dp"
         android:hint="SSID">
 
         <requestFocus />
     </EditText>
 
+    <TextView
+        android:id="@+id/AddWifiLabelBSSID"
+        android:layout_width="75dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/AddWifiLabelSSID"
+        android:layout_alignParentLeft="true"
+        android:text="BSSID:"
+        android:gravity="center"/>
+
     <EditText
         android:id="@+id/BSSID_new"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/SSID_new"
+        android:layout_toRightOf="@+id/AddWifiLabelBSSID"
         android:ems="10"
         android:hint="BSSID">
 
         <requestFocus />
     </EditText>
 
-    <EditText
-        android:id="@+id/signal_new"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="max. signal">
+    <!--<EditText-->
+        <!--android:id="@+id/signal_new"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/BSSID_new"-->
+        <!--android:ems="10"-->
+        <!--android:hint="max. signal">-->
 
-        <requestFocus />
-    </EditText>
+        <!--<requestFocus />-->
+    <!--</EditText>-->
 
-    <EditText
-        android:id="@+id/poschodie_new"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="poschodie">
+    <!--<EditText-->
+        <!--android:id="@+id/poschodie_new"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/signal_new"-->
+        <!--android:ems="10"-->
+        <!--android:hint="poschodie">-->
 
-        <requestFocus />
-    </EditText>
+        <!--<requestFocus />-->
+    <!--</EditText>-->
 
-    <EditText
-        android:id="@+id/blok_new"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="blok">
+    <!--<EditText-->
+        <!--android:id="@+id/blok_new"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_below="@+id/poschodie_new"-->
+        <!--android:ems="10"-->
+        <!--android:hint="blok">-->
 
-        <requestFocus />
-    </EditText>
+        <!--<requestFocus />-->
+    <!--</EditText>-->
 
 
     <Button
         android:id="@+id/add_bt_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_below="@+id/AddWifiLabelBSSID"
+        android:layout_centerHorizontal="true"
         android:text="ADD" />
 
-</LinearLayout>
+</RelativeLayout>

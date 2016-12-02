@@ -1,9 +1,12 @@
 package wifi.mobv.fei.stuba.sk.wifiscanner.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v7.app.AppCompatActivity;
 
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
@@ -27,6 +30,14 @@ public class ScanWifiActivity extends AppCompatActivity
 
         ListView listView = (ListView)findViewById(R.id.wifiScanListViewId);
         WifiScanResultListviewAdapter adapter = new WifiScanResultListviewAdapter(this, wifiScanner.getWifiList());
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(ScanWifiActivity.this, AddWifi.class);
+                intent.putExtra(AddWifi.SCAN_RESULT_INTENT_ID, wifiScanner.getWifiList().get(position));
+                startActivity(intent);
+            }
+        });
         listView.setAdapter(adapter);
     }
 

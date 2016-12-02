@@ -13,7 +13,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String TABLE_WIFI = "wifi";
     public static final String MEMBER_ID = "_id";
 
-    public static final String SSID="ssid";
+    public static final String SSID = "ssid";
     public static final String BSSID = "mac_addr";
     public static final String MAX_SIGNAL="max_signal";
     public static final String POSCHODIE="poschodie";
