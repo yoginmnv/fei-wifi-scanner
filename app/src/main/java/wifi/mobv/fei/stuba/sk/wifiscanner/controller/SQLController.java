@@ -40,7 +40,7 @@ public class SQLController {
         cv.put(WifiDAO.WifiEntry.COLUMN_NAME_SSID,ssid);
         cv.put(WifiDAO.WifiEntry.COLUMN_NAME_BSSID,bssid);
         cv.put(WifiDAO.WifiEntry.COLUMN_NAME_MAX_LEVEL,max_signal);
-//        cv.put(DBHelper.POSCHODIE, poschodie);
+        cv.put(WifiDAO.WifiEntry.COLUMN_NAME_ID_LOCATION, poschodie);
 //        cv.put(DBHelper.BLOK, blok);
 
         database.insert(WifiDAO.WifiEntry.TABLE_NAME, null, cv);
@@ -94,7 +94,7 @@ public class SQLController {
     }
 
     public void deleteData(long memberID) {
-        database.delete(WifiDAO.WifiEntry.TABLE_NAME, WifiDAO.WifiEntry.TABLE_NAME + "=" + memberID, null);
+        database.delete(WifiDAO.WifiEntry.TABLE_NAME, WifiDAO.WifiEntry._ID + "=" + memberID, null);
     }
 
 }

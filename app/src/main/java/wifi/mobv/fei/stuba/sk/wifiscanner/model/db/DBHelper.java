@@ -4,9 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location.LocationEntry;
-import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi.WifiEntry;
-import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.History.HistoryEntry;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.LocationDAO.LocationEntry;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.WifiDAO.WifiEntry;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.HistoryDAO.HistoryEntry;
 
 /**
  * Created by Feri on 25.11.2016.

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.wifi.ScanResult;
 import android.provider.BaseColumns;
 
 import java.util.ArrayList;
@@ -121,6 +122,48 @@ public class WifiDAO
 		}
 
 		return wifi;
+	}
+
+	public List<Wifi> locateMe(List<ScanResult> wifiList){
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		List<Wifi> wifi = new ArrayList<Wifi>();
+
+		String[] tableColumns = new String[] {
+				"Count(" + WifiEntry.COLUMN_NAME_ID_LOCATION + ")"
+		};
+
+		String whereClause = WifiEntry.COLUMN_NAME_BSSID + " = ?";
+		String[] whereArgs = new String[]{
+				wifiList.get(0).BSSID
+		};
+
+		for(int i=1; i<wifiList.size(); i++) {
+			whereClause = whereClause + " OR "+ WifiEntry.COLUMN_NAME_BSSID + " = ?";
+			whereArgs = new String[]{
+					String.valueOf(whereArgs),
+					wifiList.get(i).BSSID
+			};
+		}
+
+		String orderBy = "Count(" + WifiEntry.COLUMN_NAME_ID_LOCATION + ") DESC";
+		String groupBy = WifiEntry.COLUMN_NAME_ID_LOCATION;
+
+		Cursor c = db.query(WifiEntry.TABLE_NAME, tableColumns, whereClause, whereArgs,
+				groupBy, null, orderBy);
+
+		c.moveToFirst();
+		c.getInt(1);
+
+		//určenie polohy na základe ID_LOCATION
+		whereClause = LocationDAO.LocationEntry._ID + " = ?";
+		whereArgs = new String[]{
+				String.valueOf(c.getInt(1))
+		};
+
+		c = db.query(LocationDAO.LocationEntry.TABLE_NAME,null,whereClause,whereArgs,null,null,null);
+		c.moveToFirst();
+
+		return null;
 	}
 
 //	public void updateWifi()

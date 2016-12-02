@@ -69,11 +69,11 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent modify_intent = new Intent(getApplicationContext(), UpdateWifi.class);
                 modify_intent.putExtra("memberID", memberID_val);
-                modify_intent.putExtra("memberSSID",cursor.getString(1));
-                modify_intent.putExtra("memberBSSID", cursor.getString(2));
-                modify_intent.putExtra("memberSignal",cursor.getString(3));
-                modify_intent.putExtra("memberPoschodie",cursor.getString(4));
-                modify_intent.putExtra("memberBlok",cursor.getString(5));
+                modify_intent.putExtra("memberBSSID",cursor.getString(2));
+                modify_intent.putExtra("memberSSID", cursor.getString(3));
+                modify_intent.putExtra("memberSignal",cursor.getString(4));
+                modify_intent.putExtra("memberPoschodie",cursor.getString(1));
+//                modify_intent.putExtra("memberBlok",cursor.getString(5));
 
                 startActivity(modify_intent);
             }
