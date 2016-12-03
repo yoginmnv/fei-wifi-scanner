@@ -18,7 +18,7 @@ import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 
 public class UpdateWifi extends AppCompatActivity implements OnClickListener {
 
-    EditText ssid, bssid, signal, poschodie, blok ;
+    EditText ssid, bssid, signal, location;
     Button edit_bt, delete_bt;
 
     long member_id;
@@ -29,7 +29,7 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.modify_member);
+        setContentView(R.layout.update_wifi);
 
         dbcon = new SQLController(this);
         dbcon.open();
@@ -37,8 +37,7 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener {
         ssid = (EditText) findViewById(R.id.SSID_edit);
         bssid = (EditText) findViewById(R.id.BSSID_edit);
         signal = (EditText) findViewById(R.id.signal_edit);
-        poschodie = (EditText) findViewById(R.id.poschodie_edit);
-        blok = (EditText) findViewById(R.id.blok_edit);
+        location = (EditText) findViewById(R.id.location_edit);
 
         edit_bt = (Button) findViewById(R.id.update_bt_id);
         delete_bt = (Button) findViewById(R.id.delete_bt_id);
@@ -49,8 +48,7 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener {
         String memberSSID = i.getStringExtra("memberSSID");
         String memberBSSID = i.getStringExtra("memberBSSID");
         String memberSignal = i.getStringExtra("memberSignal");
-        String memberPoschodie = i.getStringExtra("memberPoschodie");
-        String memberBlok = i.getStringExtra("memberBlok");
+        String memberLocation = i.getStringExtra("memberLocation");
 
 
         member_id = Long.parseLong(memberID);
@@ -59,10 +57,7 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener {
         ssid.setText(memberSSID);
         bssid.setText(memberBSSID);
         signal.setText(memberSignal);
-        poschodie.setText(memberPoschodie);
-        blok.setText(memberBlok);
-
-        blok.setText(memberBlok);
+        location.setText(memberLocation);
 
 
         edit_bt.setOnClickListener(this);
@@ -77,10 +72,9 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener {
                 String ssid_upd = ssid.getText().toString();
 
                 String signal_upd = signal.getText().toString();
-                String poschodie_upd = poschodie.getText().toString();
-                String blok_upd = blok.getText().toString();
+                String location_upd = location.getText().toString();
 
-                dbcon.updateData(member_id,ssid_upd,bssid_upd,signal_upd,poschodie_upd,blok_upd);
+                dbcon.updateData(member_id,ssid_upd,bssid_upd,signal_upd,location_upd);
                 this.returnHome();
                 break;
 

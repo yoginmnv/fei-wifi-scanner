@@ -37,7 +37,7 @@ public class SQLController {
         return instance;
     }
 
-    private SQLController(Context c) {
+    public SQLController(Context c) {
         locationDAO = new LocationDAO(this, c);
         wifiDAO = new WifiDAO(this, c);
         historyDAO = new HistoryDAO(this, c);
@@ -56,19 +56,22 @@ public class SQLController {
         dbhelper.close();
     }
 
-    public void insertData(String ssid, String bssid, String max_signal, String poschodie, String blok) {
+    public void insertData(String ssid, String bssid, String max_signal, String id_location) {
         ContentValues cv = new ContentValues();
         cv.put(WifiDAO.WifiEntry.COLUMN_NAME_SSID,ssid);
         cv.put(WifiDAO.WifiEntry.COLUMN_NAME_BSSID,bssid);
         cv.put(WifiDAO.WifiEntry.COLUMN_NAME_MAX_LEVEL,max_signal);
-//        cv.put(DBHelper.POSCHODIE, poschodie);
-//        cv.put(DBHelper.BLOK, blok);
+        cv.put(WifiDAO.WifiEntry.COLUMN_NAME_ID_LOCATION, id_location);
 
         database.insert(WifiDAO.WifiEntry.TABLE_NAME, null, cv);
     }
 
     public Cursor readData() {
-        String[] allColumns = new String[] { WifiDAO.WifiEntry._ID,  WifiDAO.WifiEntry.COLUMN_NAME_ID_LOCATION, WifiDAO.WifiEntry.COLUMN_NAME_BSSID};
+        String[] allColumns = new String[] {
+                WifiDAO.WifiEntry._ID,
+                WifiDAO.WifiEntry.COLUMN_NAME_ID_LOCATION,
+                WifiDAO.WifiEntry.COLUMN_NAME_BSSID
+        };
         Cursor c = database.query(WifiDAO.WifiEntry.TABLE_NAME, allColumns, null, null, null, null, null);
         if (c != null) {
             c.moveToFirst();
@@ -103,12 +106,13 @@ public class SQLController {
         return c;
     }
 
-    public int updateData(long memberID, String ssid, String bssid, String max_signal, String poschodie, String blok) {
+    public int updateData(long memberID, String ssid, String bssid, String max_signal, String location) {
         ContentValues cvUpdate = new ContentValues();
 
         cvUpdate.put(WifiDAO.WifiEntry.COLUMN_NAME_SSID,ssid);
         cvUpdate.put(WifiDAO.WifiEntry.COLUMN_NAME_BSSID,bssid);
         cvUpdate.put(WifiDAO.WifiEntry.COLUMN_NAME_MAX_LEVEL,max_signal);
+        cvUpdate.put(WifiDAO.WifiEntry.COLUMN_NAME_ID_LOCATION,location);
 
         int i = database.update(WifiDAO.WifiEntry.TABLE_NAME, cvUpdate, WifiDAO.WifiEntry._ID + " = " + memberID, null);
         return i;

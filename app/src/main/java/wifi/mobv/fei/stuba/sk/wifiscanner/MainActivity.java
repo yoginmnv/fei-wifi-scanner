@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         addmem_bt = (Button) findViewById(R.id.addmem_bt_id);
         lv = (ListView) findViewById(R.id.memberList_id);
+
         // onClickListiner for addmember Button
         addmem_bt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         String[] from = new String[] {WifiDAO.WifiEntry._ID, WifiDAO.WifiEntry.COLUMN_NAME_BSSID};
         int[] to = new int[] { R.id.member_id, R.id.member_BSSID };
 
-        SimpleCursorAdapter adapter = new SimpleCursorAdapter(MainActivity.this, R.layout.view_member_entry, cursor, from, to);
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.view_wifis, cursor, from, to);
 
         adapter.notifyDataSetChanged();
         lv.setAdapter(adapter);
@@ -72,11 +73,11 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent modify_intent = new Intent(getApplicationContext(), UpdateWifi.class);
                 modify_intent.putExtra("memberID", memberID_val);
-                modify_intent.putExtra("memberSSID",cursor.getString(1));
+                modify_intent.putExtra("memberLocation",cursor.getString(1));
                 modify_intent.putExtra("memberBSSID", cursor.getString(2));
-                modify_intent.putExtra("memberSignal",cursor.getString(3));
-                modify_intent.putExtra("memberPoschodie",cursor.getString(4));
-                modify_intent.putExtra("memberBlok",cursor.getString(5));
+                modify_intent.putExtra("memberSSID",cursor.getString(3));
+                modify_intent.putExtra("memberSignal",cursor.getString(4));
+
 
                 startActivity(modify_intent);
             }

@@ -110,6 +110,18 @@ public class LocationDAO
 		return location;
 	}
 
+	public Cursor readData()
+	{
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		String selectQuery = "SELECT * FROM " + LocationEntry.TABLE_NAME + ";";
+		Cursor c = db.rawQuery(selectQuery, null);
+		if (c != null) {
+			c.moveToFirst();
+		}
+
+		return c;
+	}
+
 	public int update(Location location)
 	{
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
