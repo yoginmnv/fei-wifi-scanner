@@ -1,7 +1,5 @@
 package wifi.mobv.fei.stuba.sk.wifiscanner.model.db;
 
-import android.provider.BaseColumns;
-
 /**
  * Created by maros on 1.12.2016.
  */

@@ -1,27 +1,20 @@
 package wifi.mobv.fei.stuba.sk.wifiscanner.model.db;
 
-import android.provider.BaseColumns;
-
 /**
  * Created by maros on 1.12.2016.
  */
 
 public class History
 {
-	public History(long id, String date)
+	public History(long idLocation)
 	{
-		this.id = id;
-		this.date = date;
-	}
-
-	public History(String date)
-	{
-		this.date = date;
+		this.idLocation = idLocation;
 	}
 
 	public History() {}
 
 	private long id;
+	private long idLocation;
 	private String date;
 
 	public long getId()
@@ -32,6 +25,16 @@ public class History
 	public void setId(long id)
 	{
 		this.id = id;
+	}
+
+	public long getLocationID()
+	{
+		return idLocation;
+	}
+
+	public void setLocationID(long idLocation)
+	{
+		this.idLocation = idLocation;
 	}
 
 	public String getDate()
