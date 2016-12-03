@@ -94,7 +94,7 @@ public class SQLController {
     }
 
     public void deleteData(long memberID) {
-        database.delete(WifiDAO.WifiEntry.TABLE_NAME, WifiDAO.WifiEntry.TABLE_NAME + "=" + memberID, null);
+        database.delete(WifiDAO.WifiEntry.TABLE_NAME, WifiDAO.WifiEntry._ID + "=" + memberID, null);
     }
 
 }
