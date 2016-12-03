@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.History;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
 
 /**
@@ -35,7 +36,7 @@ public class LocationDAO
 		dbHelper = DBHelper.getInstance(context);
 	}
 
-	public long createLocation(Location location)
+	public long create(Location location)
 	{
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -44,31 +45,13 @@ public class LocationDAO
 		values.put(LocationEntry.COLUMN_NAME_FLOOR, location.getFloor());
 
 		return db.insert(LocationEntry.TABLE_NAME, null, values);
-
-		//        db.beginTransaction();
-		//        try {
-		//            // The user might already exist in the database (i.e. the same user created multiple posts).
-		//            long userId = addOrUpdateUser();
-		//
-		//            ContentValues values = new ContentValues();
-		// 			  values.put(LocationEntry.COLUMN_NAME_BLOCK_NAME, location.getBlockName());
-		// 			  values.put(LocationEntry.COLUMN_NAME_FLOOR, location.getFloor());
-		//
-		//            // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
-		//            db.insertOrThrow(LocationEntry.TABLE_NAME, null, values);
-		//            db.setTransactionSuccessful();
-		//        } catch (Exception e) {
-		//            Log.d(TAG, "Error while trying to add post to database");
-		//        } finally {
-		//            db.endTransaction();
-		//        }
 	}
 
-	public Location readLocation(long locationID)
+	public Location read(long locationID)
 	{
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-		String selectQuery = "SELECT * FROM " + LocationEntry.TABLE_NAME + " WHERE " + LocationEntry._ID + " = " + String.valueOf(locationID ) + ";";
+		String selectQuery = "SELECT * FROM " + LocationEntry.TABLE_NAME + " WHERE " + LocationEntry._ID + " = " + String.valueOf(locationID) + ";";
 
 		Cursor c = db.rawQuery(selectQuery, null);
 
@@ -84,14 +67,15 @@ public class LocationDAO
 			}
 		}
 
-		Location lc = new Location();
-		lc.setBlockName(c.getString(c.getColumnIndex(LocationEntry.COLUMN_NAME_BLOCK_NAME)));
-		lc.setFloor(c.getString(c.getColumnIndex(LocationEntry.COLUMN_NAME_FLOOR)));
+		Location l = new Location();
+		l.setId(c.getLong(c.getColumnIndex(LocationEntry._ID)));
+		l.setBlockName(c.getString(c.getColumnIndex(LocationEntry.COLUMN_NAME_BLOCK_NAME)));
+		l.setFloor(c.getString(c.getColumnIndex(LocationEntry.COLUMN_NAME_FLOOR)));
 
-		return lc;
+		return l;
 	}
 
-	public List<Location> readAllLocations()
+	public List<Location> readAll()
 	{
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		List<Location> location = new ArrayList<Location>();
@@ -123,7 +107,7 @@ public class LocationDAO
 		return location;
 	}
 
-	public int updateLocation(Location location)
+	public int update(Location location)
 	{
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
@@ -134,10 +118,30 @@ public class LocationDAO
 		return db.update(LocationEntry.TABLE_NAME, values, LocationEntry._ID + " = ?", new String[] { String.valueOf(location.getId()) });
 	}
 
-	public int deleteLocation(long locationID)
+	public int delete(long locationID)
 	{
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		return db.delete(LocationEntry.TABLE_NAME, LocationEntry._ID + " = ?", new String[] { String.valueOf(locationID) });
+	}
+
+	public int deleteAll()
+	{
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		return db.delete(LocationEntry.TABLE_NAME, "1", null);
+	}
+
+	public void printAll()
+	{
+		List<Location> list = readAll();
+		for( int i = 0; i < list.size(); ++i )
+		{
+			Location actual = list.get(i);
+			System.out.println(
+					actual.getId() + " " +
+					actual.getBlockName() + " " +
+					actual.getFloor());
+		}
 	}
 }

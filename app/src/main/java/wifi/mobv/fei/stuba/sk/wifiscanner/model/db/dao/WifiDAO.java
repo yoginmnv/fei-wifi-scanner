@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
 
 /**
@@ -27,7 +28,7 @@ public class WifiDAO
 		public static final String COLUMN_NAME_SSID = "ssid";
 		public static final String COLUMN_NAME_MAX_LEVEL = "max_level";
 	}
-	
+
 	public static final String TAG = WifiDAO.class.getSimpleName();
 	private DBHelper dbHelper;
 
@@ -36,14 +37,14 @@ public class WifiDAO
 		dbHelper = DBHelper.getInstance(context);
 	}
 
-	public long createWifi(Wifi wifi, long locationID)
+	public long create(Wifi wifi)
 	{
 		// Gets the data repository in write mode
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
 		// Create a new map of values, where column names are the keys
 		ContentValues values = new ContentValues();
-		values.put(WifiEntry.COLUMN_NAME_ID_LOCATION, locationID);
+		values.put(WifiEntry.COLUMN_NAME_ID_LOCATION, wifi.getLocationID());
 		values.put(WifiEntry.COLUMN_NAME_BSSID, wifi.getBSSID());
 		values.put(WifiEntry.COLUMN_NAME_SSID, wifi.getSSID());
 		values.put(WifiEntry.COLUMN_NAME_MAX_LEVEL, wifi.getMaxLevel());
@@ -52,29 +53,67 @@ public class WifiDAO
 		return db.insert(WifiEntry.TABLE_NAME, null, values);
 	}
 
-	public Wifi readWifi(long wifiID)
+	public void create(List<Wifi> wifi)
+	{
+		// loop through list
+		for( int i = 0; i < wifi.size(); ++i )
+		{
+			// insert each entry into database
+			if( create(wifi.get(i)) == -1 )
+			{
+				// if entry exists try to update
+				SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+				String level = WifiEntry.COLUMN_NAME_MAX_LEVEL;
+
+				String[] columns = {WifiEntry._ID, level};
+				String selection = WifiEntry.COLUMN_NAME_BSSID + " = ?";
+				String[] selectionArgs = {String.valueOf(wifi.get(i).getBSSID())};
+
+				Cursor c = db.query(WifiEntry.TABLE_NAME, columns, selection, selectionArgs, null, null, null);
+
+				if( c != null )
+				{
+					if( c.moveToFirst() )
+					{
+						if( wifi.get(i).getMaxLevel() < c.getInt(c.getColumnIndex(level)) )
+						{
+							db = dbHelper.getWritableDatabase();
+
+							// New value for one column
+							ContentValues values = new ContentValues();
+							values.put(WifiEntry.COLUMN_NAME_ID_LOCATION, wifi.get(i).getLocationID());
+							values.put(WifiEntry.COLUMN_NAME_SSID, wifi.get(i).getSSID());
+							values.put(WifiEntry.COLUMN_NAME_MAX_LEVEL, wifi.get(i).getMaxLevel());
+
+							// Which row to update, based on the title
+							String whereClause = WifiEntry._ID + " = ?";
+							String[] whereArgs = {String.valueOf(c.getLong(c.getColumnIndex(WifiEntry._ID)))};
+
+							db.update(WifiEntry.TABLE_NAME, values, whereClause, whereArgs);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	public Wifi read(long wifiID)
 	{
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
 		// Define a projection that specifies which columns from the database
 		// you will actually use after this query.
-		String[] projection = {
-				WifiEntry._ID,
-				WifiEntry.COLUMN_NAME_ID_LOCATION,
-				WifiEntry.COLUMN_NAME_BSSID,
-				WifiEntry.COLUMN_NAME_SSID,
-				WifiEntry.COLUMN_NAME_MAX_LEVEL,
-		};
+		String[] projection = {WifiEntry._ID, WifiEntry.COLUMN_NAME_ID_LOCATION, WifiEntry.COLUMN_NAME_BSSID, WifiEntry.COLUMN_NAME_SSID, WifiEntry.COLUMN_NAME_MAX_LEVEL,};
 
 		// Filter results WHERE "title" = 'My Title'
 		String selection = WifiEntry._ID + " = ?";
-		String[] selectionArgs = { String.valueOf(wifiID) };
+		String[] selectionArgs = {String.valueOf(wifiID)};
 
 		// How you want the results sorted in the resulting Cursor
 		// String sortOrder = WifiEntry.COLUMN_NAME_SUBTITLE + " DESC";
 
-		Cursor cursor = db.query(
-				WifiEntry.TABLE_NAME,        // The table to query
+		Cursor cursor = db.query(WifiEntry.TABLE_NAME,        // The table to query
 				projection,                               // The columns to return
 				selection,                                // The columns for the WHERE clause
 				selectionArgs,                            // The values for the WHERE clause
@@ -89,10 +128,10 @@ public class WifiDAO
 		return new Wifi();
 	}
 
-	public List<Wifi> readAllWifis()
+	public List<Wifi> readAll()
 	{
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		List<Wifi> wifi = new ArrayList<Wifi>();
+		List<Wifi> list = new ArrayList<Wifi>();
 		String selectQuery = "SELECT * FROM " + WifiEntry.TABLE_NAME + ";";
 
 		Cursor c = db.rawQuery(selectQuery, null);
@@ -110,7 +149,7 @@ public class WifiDAO
 					wc.setSSID(c.getString(c.getColumnIndex(WifiEntry.COLUMN_NAME_SSID)));
 					wc.setMaxLevel(c.getInt(c.getColumnIndex(WifiEntry.COLUMN_NAME_MAX_LEVEL)));
 
-					wifi.add(wc);
+					list.add(wc);
 				} while( c.moveToNext() );
 			}
 		}
@@ -120,36 +159,53 @@ public class WifiDAO
 			c.close();
 		}
 
-		return wifi;
+		return list;
 	}
 
-//	public void updateWifi()
-//	{
-//		SQLiteDatabase db = mDbHelper.getReadableDatabase();
-//
-//		// New value for one column
-//		ContentValues values = new ContentValues();
-//		values.put(FeedEntry.COLUMN_NAME_TITLE, title);
-//
-//		// Which row to update, based on the title
-//		String selection = FeedEntry.COLUMN_NAME_TITLE + " LIKE ?";
-//		String[] selectionArgs = { "MyTitle" };
-//
-//		int count = db.update(
-//				FeedReaderDbHelper.FeedEntry.TABLE_NAME,
-//				values,
-//				selection,
-//				selectionArgs);
-//	}
+	public int update(Wifi wifi)
+	{
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-	public void deleteWifi(long wifiID)
+		// New value for one column
+		ContentValues values = new ContentValues();
+		values.put(WifiEntry.COLUMN_NAME_ID_LOCATION, wifi.getLocationID());
+
+		// Which row to update, based on the title
+		String whereClause = WifiEntry._ID + " = ?";
+		String[] whereArgs = {String.valueOf(wifi.getId())};
+
+		return db.update(WifiEntry.TABLE_NAME, values, whereClause, whereArgs);
+	}
+
+	public int delete(long wifiID)
 	{
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		// Define 'where' part of query.
 		String selection = WifiEntry._ID + " LIKE ?";
 		// Specify arguments in placeholder order.
-		String[] selectionArgs = { String.valueOf(wifiID) };
+		String[] selectionArgs = {String.valueOf(wifiID)};
 		// Issue SQL statement.
-		db.delete(WifiEntry.TABLE_NAME, selection, selectionArgs);
+		return db.delete(WifiEntry.TABLE_NAME, selection, selectionArgs);
+	}
+
+	public int deleteAll()
+	{
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		return db.delete(WifiEntry.TABLE_NAME, "1", null);
+	}
+
+	public void printAll()
+	{
+		List<Wifi> list = readAll();
+		for( int i = 0; i < list.size(); ++i )
+		{
+			Wifi actual = list.get(i);
+			System.out.println(actual.getId() + " " +
+					actual.getLocationID() + " " +
+					actual.getBSSID() + " " +
+					actual.getSSID() + " " +
+					actual.getMaxLevel());
+		}
 	}
 }
