@@ -27,7 +27,7 @@ public class AddLocation extends AppCompatActivity
 {
 	private LocationDAO dao;
 	private TextWatcher textWatcher;
-    private  Location edit_location;
+    private Location edit_location;
 
     SimpleCursorAdapter adapter;
 	EditText et_blockName;
@@ -93,7 +93,10 @@ public class AddLocation extends AppCompatActivity
             public void onClick(View view) {
 
                 if(edit_location != null) {
-                    dao.delete(edit_location.getId());
+                    if( dao.delete(edit_location.getId()) == 1 )
+					{
+						showToastMessage(getResources().getString(R.string.db_item_delted), Toast.LENGTH_SHORT);
+					}
 
                     edit_location=null;
                     et_floor.setText("");
@@ -124,7 +127,15 @@ public class AddLocation extends AppCompatActivity
                     edit_location.setBlockName(et_blockName.getText().toString());
                     edit_location.setFloor(et_floor.getText().toString());
 
-                    dao.update(edit_location);
+					// if 0 rows affected
+                    if( dao.update(edit_location) == 0 )
+					{
+						showToastMessage(getResources().getString(R.string.db_item_exists) ,Toast.LENGTH_SHORT);
+					}
+					else
+					{
+						showToastMessage(getResources().getString(R.string.db_item_updated) ,Toast.LENGTH_SHORT);
+					}
 
                     edit_location=null;
                     et_floor.setText("");
@@ -149,7 +160,6 @@ public class AddLocation extends AppCompatActivity
 
 
 		textWatcher = new TextWatcher() {
-
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2)
 			{
@@ -191,11 +201,11 @@ public class AddLocation extends AppCompatActivity
 
 		if( dao.create(new Location(blockName, floor)) == -1 )
 		{
-			Toast.makeText(this, "Entry alredy exists", Toast.LENGTH_SHORT).show();
+			showToastMessage(getResources().getString(R.string.db_item_exists), Toast.LENGTH_SHORT);
 		}
 		else
 		{
-			Toast.makeText(this, "Location created successfully", Toast.LENGTH_SHORT).show();
+			showToastMessage(getResources().getString(R.string.db_item_created), Toast.LENGTH_SHORT);
             String[] from = new String[] {
                     LocationDAO.LocationEntry._ID,
                     LocationDAO.LocationEntry.COLUMN_NAME_BLOCK_NAME,
@@ -210,6 +220,10 @@ public class AddLocation extends AppCompatActivity
             lv_location.setAdapter(adapter);
 
 		}
+	}
 
+	public void showToastMessage(CharSequence text, int duration)
+	{
+		Toast.makeText(this, text, duration).show();
 	}
 }
