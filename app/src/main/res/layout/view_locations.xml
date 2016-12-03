@@ -14,7 +14,9 @@
         android:id="@+id/location_nameOfBlock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:textSize="17sp"
         android:textStyle="bold"/>
 
@@ -22,7 +24,9 @@
         android:id="@+id/location_floorNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
         android:textSize="17sp"
         android:textStyle="bold"/>
 
