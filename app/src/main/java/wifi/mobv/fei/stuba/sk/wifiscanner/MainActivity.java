@@ -31,7 +31,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-		dbcon = new SQLController(this);
+		dbcon = SQLController.getInstance(this);
+
+		//        WifiScanner ws = new WifiScanner(this);
+//        ws.startScan();
+//        dbcon.getWifiDAO().locateMe(ws.getWifiList());
+//        ws.stopScan();
         dbcon.open();
 
         addmem_bt = (Button) findViewById(R.id.addmem_bt_id);

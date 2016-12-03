@@ -18,6 +18,7 @@ import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.WifiDAO;
 
 public class SQLController {
 
+    private static SQLController instance;
     private LocationDAO locationDAO;
     private WifiDAO wifiDAO;
     private HistoryDAO historyDAO;
@@ -26,7 +27,17 @@ public class SQLController {
     private Context ourcontext;
     private SQLiteDatabase database;
 
-    public SQLController(Context c) {
+    public static SQLController getInstance(Context c)
+    {
+        if( instance == null )
+        {
+            instance = new SQLController(c);
+        }
+
+        return instance;
+    }
+
+    private SQLController(Context c) {
         locationDAO = new LocationDAO(this, c);
         wifiDAO = new WifiDAO(this, c);
         historyDAO = new HistoryDAO(this, c);

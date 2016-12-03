@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
+import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.LocationAdapter;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.LocationDAO;
@@ -38,7 +39,7 @@ public class AddLocation extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.manage_location);
 
-		dao = new LocationDAO(this);
+		dao = SQLController.getInstance(this).getLocationDAO();
 
 		et_blockName = (EditText) findViewById(R.id.et_location_block);
 		et_floor = (EditText) findViewById(R.id.et_floor);
