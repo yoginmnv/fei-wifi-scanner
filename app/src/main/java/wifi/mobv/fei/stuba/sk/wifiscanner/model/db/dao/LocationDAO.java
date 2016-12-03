@@ -10,6 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.History;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
@@ -29,10 +30,12 @@ public class LocationDAO
 	}
 	
 	public static final String TAG = LocationDAO.class.getSimpleName();
+	private SQLController controller;
 	private DBHelper dbHelper;
 
-	public LocationDAO(Context context)
+	public LocationDAO(SQLController controller, Context context)
 	{
+		this.controller = controller;
 		dbHelper = DBHelper.getInstance(context);
 	}
 

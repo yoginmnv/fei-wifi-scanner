@@ -10,6 +10,7 @@ import android.provider.BaseColumns;
 import java.util.ArrayList;
 import java.util.List;
 
+import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
@@ -31,10 +32,12 @@ public class WifiDAO
 	}
 
 	public static final String TAG = WifiDAO.class.getSimpleName();
+	private SQLController controller;
 	private DBHelper dbHelper;
 
-	public WifiDAO(Context context)
+	public WifiDAO(SQLController controller, Context context)
 	{
+		this.controller = controller;
 		dbHelper = DBHelper.getInstance(context);
 	}
 
@@ -178,49 +181,6 @@ public class WifiDAO
 		return db.update(WifiEntry.TABLE_NAME, values, whereClause, whereArgs);
 	}
 
-	public Location locateMe(List<ScanResult> wifiList)
-	{
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		List<Wifi> wifi = new ArrayList<Wifi>();
-
-		String[] tableColumns = new String[] {
-				"Count(" + WifiEntry.COLUMN_NAME_ID_LOCATION + ")"
-		};
-
-		String whereClause = WifiEntry.COLUMN_NAME_BSSID + " = ?";
-		String[] whereArgs = new String[]{
-				wifiList.get(0).BSSID
-		};
-
-		for(int i=1; i<wifiList.size(); i++) {
-			whereClause = whereClause + " OR "+ WifiEntry.COLUMN_NAME_BSSID + " = ?";
-			whereArgs = new String[]{
-					String.valueOf(whereArgs),
-					wifiList.get(i).BSSID
-			};
-		}
-
-		String orderBy = "Count(" + WifiEntry.COLUMN_NAME_ID_LOCATION + ") DESC";
-		String groupBy = WifiEntry.COLUMN_NAME_ID_LOCATION;
-
-		Cursor c = db.query(WifiEntry.TABLE_NAME, tableColumns, whereClause, whereArgs,
-				groupBy, null, orderBy);
-
-		c.moveToFirst();
-		c.getInt(1);
-
-		//určenie polohy na základe ID_LOCATION
-		whereClause = LocationDAO.LocationEntry._ID + " = ?";
-		whereArgs = new String[]{
-				String.valueOf(c.getInt(1))
-		};
-
-		c = db.query(LocationDAO.LocationEntry.TABLE_NAME,null,whereClause,whereArgs,null,null,null);
-		c.moveToFirst();
-		
-		return new Location(c.getString(1),c.getString(2));
-	}
-
 	public int delete(long wifiID)
 	{
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -251,5 +211,36 @@ public class WifiDAO
 					actual.getSSID() + " " +
 					actual.getMaxLevel());
 		}
+	}
+
+	public Location locateMe(List<ScanResult> wifiList)
+	{
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		List<Wifi> wifi = new ArrayList<Wifi>();
+
+		String[] tableColumns = new String[]{"Count(" + WifiEntry.COLUMN_NAME_ID_LOCATION + ")"};
+
+		String whereClause = WifiEntry.COLUMN_NAME_BSSID + " = ?";
+		String[] whereArgs = new String[]{wifiList.get(0).BSSID};
+
+		for( int i = 1; i < wifiList.size(); i++ )
+		{
+			whereClause = whereClause + " OR " + WifiEntry.COLUMN_NAME_BSSID + " = ?";
+			whereArgs = new String[]{String.valueOf(whereArgs), wifiList.get(i).BSSID};
+		}
+
+		String orderBy = "Count(" + WifiEntry.COLUMN_NAME_ID_LOCATION + ") DESC";
+		String groupBy = WifiEntry.COLUMN_NAME_ID_LOCATION;
+
+		Cursor c = db.query(WifiEntry.TABLE_NAME, tableColumns, whereClause, whereArgs, groupBy, null, orderBy);
+
+		if( c != null )
+		{
+			c.moveToFirst();
+			//určenie polohy na základe ID_LOCATION
+			return controller.getLocationDAO().read(c.getLong(c.getColumnIndex(WifiEntry.COLUMN_NAME_ID_LOCATION)));
+		}
+
+		return null;
 	}
 }

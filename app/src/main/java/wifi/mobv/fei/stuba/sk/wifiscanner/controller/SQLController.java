@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.HistoryDAO;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.LocationDAO;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.WifiDAO;
 
 /**
@@ -16,11 +18,19 @@ import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.WifiDAO;
 
 public class SQLController {
 
+    private LocationDAO locationDAO;
+    private WifiDAO wifiDAO;
+    private HistoryDAO historyDAO;
+
     private DBHelper dbhelper;
     private Context ourcontext;
     private SQLiteDatabase database;
 
     public SQLController(Context c) {
+        locationDAO = new LocationDAO(this, c);
+        wifiDAO = new WifiDAO(this, c);
+        historyDAO = new HistoryDAO(this, c);
+
         ourcontext = c;
     }
 
@@ -97,4 +107,18 @@ public class SQLController {
         database.delete(WifiDAO.WifiEntry.TABLE_NAME, WifiDAO.WifiEntry._ID + "=" + memberID, null);
     }
 
+    public LocationDAO getLocationDAO()
+    {
+        return locationDAO;
+    }
+
+    public WifiDAO getWifiDAO()
+    {
+        return wifiDAO;
+    }
+
+    public HistoryDAO getHistoryDAO()
+    {
+        return historyDAO;
+    }
 }

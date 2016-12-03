@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.History;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
@@ -32,10 +33,12 @@ public class HistoryDAO
 	}
 
 	public static final String TAG = HistoryDAO.class.getSimpleName();
+	private SQLController controller;
 	private DBHelper dbHelper;
 
-	public HistoryDAO(Context context)
+	public HistoryDAO(SQLController controller, Context context)
 	{
+		this.controller = controller;
 		dbHelper = DBHelper.getInstance(context);
 	}
 
@@ -118,6 +121,13 @@ public class HistoryDAO
 		values.put(HistoryEntry.COLUMN_NAME_DATE, getDateTime());
 
 		return db.update(HistoryEntry.TABLE_NAME, values, HistoryEntry._ID + " = ?", new String[]{String.valueOf(history.getId())});
+	}
+
+	public int delete(long historyID)
+	{
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+		return db.delete(HistoryEntry.TABLE_NAME, HistoryEntry._ID + " = ?", new String[] { String.valueOf(historyID) });
 	}
 
 	public int deleteAll()
