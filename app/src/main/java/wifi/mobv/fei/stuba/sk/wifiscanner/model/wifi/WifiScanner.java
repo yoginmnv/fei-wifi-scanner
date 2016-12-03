@@ -36,7 +36,7 @@ public class WifiScanner {
 
     public WifiScanner(Context context)
     {
-        
+
         handler = new Handler();
         // manage all aspects of WIFI connectivity
         wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);

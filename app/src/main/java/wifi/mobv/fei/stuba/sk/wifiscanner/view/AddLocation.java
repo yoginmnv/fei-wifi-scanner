@@ -6,11 +6,11 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
-import java.util.List;
-
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.LocationAdapter;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.LocationDAO;
 
@@ -22,8 +22,10 @@ public class AddLocation extends AppCompatActivity
 {
 	private LocationDAO dao;
 	private TextWatcher textWatcher;
+	LocationAdapter adapter;
 	EditText et_blockName;
 	EditText et_floor;
+	ListView lv_location;
 
 	public void AddLocation(LocationDAO dao)
 	{
@@ -38,15 +40,13 @@ public class AddLocation extends AppCompatActivity
 
 		dao = new LocationDAO(this);
 
-		List<Location> list = dao.readAllLocations();
-		for( int i = 0; i < list.size(); ++i )
-		{
-			Location lc = list.get(i);
-			System.out.println(lc.getId() + " " + lc.getBlockName() + " " + lc.getFloor());
-		}
-
 		et_blockName = (EditText) findViewById(R.id.et_location_block);
 		et_floor = (EditText) findViewById(R.id.et_floor);
+		lv_location = (ListView) findViewById(R.id.lv_location);
+
+		//instantiate custom adapter
+//		adapter = new LocationAdapter(dao.readAll(), this);
+//		lv_location.setAdapter(adapter);
 
 		textWatcher = new TextWatcher() {
 
@@ -76,7 +76,7 @@ public class AddLocation extends AppCompatActivity
 
 	public void createLocation(View view)
 	{
-		String blockName = et_blockName.getText().toString();
+		String blockName = et_blockName.getText().toString().toUpperCase();
 		if( blockName.matches("") )
 		{
 			Toast.makeText(this, "You did not enter a block name", Toast.LENGTH_SHORT).show();
@@ -89,7 +89,16 @@ public class AddLocation extends AppCompatActivity
 			return;
 		}
 
-		dao.createLocation(new Location(blockName, floor));
-		Toast.makeText(this, "Location created successfully", Toast.LENGTH_SHORT).show();
+		if( dao.create(new Location(blockName, floor)) == -1 )
+		{
+			Toast.makeText(this, "Entry alredy exists", Toast.LENGTH_SHORT).show();
+		}
+		else
+		{
+			Toast.makeText(this, "Location created successfully", Toast.LENGTH_SHORT).show();
+			adapter = new LocationAdapter(dao.readAll(), this);
+			lv_location.setAdapter(adapter);
+		}
+
 	}
 }
