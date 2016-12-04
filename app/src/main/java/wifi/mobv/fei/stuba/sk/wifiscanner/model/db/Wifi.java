@@ -15,6 +15,19 @@ public class Wifi
 		this.maxLevel = maxLevel;
 	}
 
+	/**
+	 * Updating location an existing wifi
+	 */
+	public Wifi(long id, long idLocation, String SSID)
+	{
+		this.id = id;
+		this.idLocation = idLocation;
+		this.SSID = SSID;
+	}
+
+	/**
+	 * Creating new wifi
+	 */
 	public Wifi(long idLocation, String BSSID, String SSID, int maxLevel)
 	{
 		this.idLocation = idLocation;
@@ -79,5 +92,17 @@ public class Wifi
 	public void setMaxLevel(int maxLevel)
 	{
 		this.maxLevel = maxLevel;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "Wifi{" +
+				"id=" + id +
+				", idLocation=" + idLocation +
+				", BSSID='" + BSSID + '\'' +
+				", SSID='" + SSID + '\'' +
+				", maxLevel=" + maxLevel +
+				'}';
 	}
 }

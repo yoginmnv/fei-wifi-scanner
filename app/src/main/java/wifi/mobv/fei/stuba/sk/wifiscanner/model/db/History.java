@@ -46,4 +46,14 @@ public class History
 	{
 		this.date = date;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "History{" +
+				"id=" + id +
+				", idLocation=" + idLocation +
+				", date='" + date + '\'' +
+				'}';
+	}
 }

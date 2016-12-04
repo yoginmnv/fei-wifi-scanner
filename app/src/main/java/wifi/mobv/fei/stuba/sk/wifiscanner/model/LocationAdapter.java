@@ -1,92 +1,49 @@
 package wifi.mobv.fei.stuba.sk.wifiscanner.model;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import wifi.mobv.fei.stuba.sk.wifiscanner.R;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
 
 /**
- * Created by maros on 3.12.2016.
+ * Created by maros on 4.12.2016.
  */
 
-public class LocationAdapter extends BaseAdapter implements ListAdapter
+public class LocationAdapter extends ArrayAdapter<Location>
 {
-	private List<Location> list = new ArrayList<Location>();
-	private Context context;
-
-	public LocationAdapter(List<Location> list, Context context)
+	public LocationAdapter(Context context, int textViewResourceId, List<Location> list)
 	{
-		this.list = list;
-		this.context = context;
+		super(context, textViewResourceId, list);
+	}
+
+	@Override //don't override if you don't want the default spinner to be a two line view
+	public View getView(int position, View convertView, ViewGroup parent)
+	{
+		return initView(position, convertView);
 	}
 
 	@Override
-	public int getCount()
+	public View getDropDownView(int position, View convertView, ViewGroup parent)
 	{
-		return list.size();
+		return initView(position, convertView);
 	}
 
-	@Override
-	public Object getItem(int i)
+	private View initView(int position, View convertView)
 	{
-		return list.get(i);
-	}
-
-	@Override
-	public long getItemId(int i)
-	{
-		return list.get(i).getId();
-	}
-
-	@Override
-	public View getView(final int i, View view, ViewGroup viewGroup)
-	{
-		if( view == null )
+		if( convertView == null )
 		{
-			LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			view = inflater.inflate(R.layout.manage_location, null);
+			convertView = View.inflate(getContext(), android.R.layout.simple_list_item_1, null);
 		}
 
-//		//Handle TextView and display string from your list
-//		TextView listItemText = (TextView) view.findViewById(R.id.tv_location_info);
-//		if(list.size() != 0 )
-//		{
-//			listItemText.setText("Block " + list.get(i).getBlockName() + " - " + list.get(i).getFloor() + ". floor");
-//		}
-//
-//		//Handle buttons and add onClickListeners
-//		Button b_edit = (Button)view.findViewById(R.id.b_location_edit);
-//		Button b_delete = (Button)view.findViewById(R.id.b_location_delete);
-//
-//		b_edit.setOnClickListener(new View.OnClickListener()
-//		{
-//			@Override
-//			public void onClick(View v)
-//			{
-//				//do something
-//				list.remove(i); //or some other task
-//				notifyDataSetChanged();
-//			}
-//		});
-//
-//		b_delete.setOnClickListener(new View.OnClickListener()
-//		{
-//			@Override
-//			public void onClick(View v)
-//			{
-//				//do something
-//				notifyDataSetChanged();
-//			}
-//		});
+		TextView tvText1 = (TextView)convertView.findViewById(android.R.id.text1);
 
-		return view;
+		tvText1.setText(getItem(position).getBlockName() + getItem(position).getFloor());
+
+		return convertView;
 	}
 }

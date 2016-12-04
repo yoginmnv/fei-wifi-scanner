@@ -3,4 +3,8 @@
     <string name="dao_create">Create</string>
     <string name="location_block">Name of the block</string>
     <string name="location_floor">Floor number</string>
+    <string name="db_item_created">Item was successfully created</string>
+    <string name="db_item_updated">Item was successfully updated</string>
+    <string name="db_item_delted">Item was successfully deleted</string>
+    <string name="db_item_exists">Item already exists in database</string>
 </resources>

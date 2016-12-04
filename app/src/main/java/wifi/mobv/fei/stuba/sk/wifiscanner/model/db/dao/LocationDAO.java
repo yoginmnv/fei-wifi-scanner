@@ -15,6 +15,8 @@ import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.DBHelper;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.History;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
 
+import static android.icu.text.MessagePattern.ArgType.SELECT;
+
 /**
  * Created by maros on 1.12.2016.
  */
@@ -78,11 +80,26 @@ public class LocationDAO
 		return l;
 	}
 
+	public Cursor readData()
+	{
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		String selectQuery =
+				"SELECT * FROM " + LocationEntry.TABLE_NAME +
+				" ORDER BY " + LocationEntry.COLUMN_NAME_BLOCK_NAME + ", " + LocationEntry.COLUMN_NAME_FLOOR + ";";
+		Cursor c = db.rawQuery(selectQuery, null);
+		if (c != null) {
+			c.moveToFirst();
+		}
+
+		return c;
+	}
+
 	public List<Location> readAll()
 	{
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		List<Location> location = new ArrayList<Location>();
-		String selectQuery = "SELECT * FROM " + LocationEntry.TABLE_NAME + ";";
+		String selectQuery = "SELECT * FROM " + LocationEntry.TABLE_NAME +
+				" ORDER BY " + LocationEntry.COLUMN_NAME_BLOCK_NAME + ", " + LocationEntry.COLUMN_NAME_FLOOR + ";";
 
 		Cursor c = db.rawQuery(selectQuery, null);
 
@@ -140,11 +157,10 @@ public class LocationDAO
 		List<Location> list = readAll();
 		for( int i = 0; i < list.size(); ++i )
 		{
-			Location actual = list.get(i);
-			System.out.println(
-					actual.getId() + " " +
-					actual.getBlockName() + " " +
-					actual.getFloor());
+			System.out.println(list.get(i));
 		}
 	}
+
+	// ------------------------------------------------------------------------------------------ //
+
 }

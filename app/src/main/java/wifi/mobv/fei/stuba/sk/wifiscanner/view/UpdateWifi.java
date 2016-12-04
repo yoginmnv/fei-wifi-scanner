@@ -5,97 +5,98 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.MainActivity;
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.LocationAdapter;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.WifiDAO;
 
 /**
  * Created by Feri on 25.11.2016.
  */
 
-public class UpdateWifi extends AppCompatActivity implements OnClickListener {
+public class UpdateWifi extends AppCompatActivity implements OnClickListener,
+		AdapterView.OnItemSelectedListener
+{
+	private WifiDAO wifiDAO;
+	private TextView tv_ssid;
+	private TextView tv_bssid;
+	private Spinner s_blockFloor;
+	private Button b_update;
+	private Button b_delete;
+	private long memberID;
+	private long locationID;
 
-    EditText ssid, bssid, signal, poschodie, blok ;
-    Button edit_bt, delete_bt;
+	@Override
+	protected void onCreate(Bundle savedInstanceState)
+	{
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.update_wifi);
 
-    long member_id;
+		wifiDAO = SQLController.getInstance(this).getWifiDAO();
 
-    SQLController dbcon;
+		tv_ssid = (TextView)findViewById(R.id.tv_wifiUpdate_ssid);
+		tv_bssid = (TextView)findViewById(R.id.tv_wifiUpdate_bssid);
+		s_blockFloor = (Spinner)findViewById(R.id.s_wifiUpdate_blockFloor);
+		b_update = (Button)findViewById(R.id.b_wifiUpdate_update);
+		b_delete = (Button)findViewById(R.id.b_wifiUpdate_delete);
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+		List<Location> list = SQLController.getInstance(this).getLocationDAO().readAll();
+		LocationAdapter adapter = new LocationAdapter(this, R.layout.update_wifi, list);
+		s_blockFloor.setAdapter(adapter);
+		s_blockFloor.setOnItemSelectedListener(this);
 
-        setContentView(R.layout.modify_member);
+		Intent i = getIntent();
+		memberID = Long.parseLong(i.getStringExtra("memberID"));
+		tv_ssid.setText(i.getStringExtra("memberSSID"));
+		tv_bssid.setText(i.getStringExtra("memberBSSID"));
 
-        dbcon = new SQLController(this);
-        dbcon.open();
+		// treba overit ci to funguje a co sa vlastne posiela do memberLocation
+		s_blockFloor.setSelection((int)adapter.getItemId(Integer.parseInt(i.getStringExtra("memberLocation")))-1);
 
-        ssid = (EditText) findViewById(R.id.SSID_edit);
-        bssid = (EditText) findViewById(R.id.BSSID_edit);
-        signal = (EditText) findViewById(R.id.signal_edit);
-        poschodie = (EditText) findViewById(R.id.poschodie_edit);
-        blok = (EditText) findViewById(R.id.blok_edit);
+		b_update.setOnClickListener(this);
+		b_delete.setOnClickListener(this);
+	}
 
-        edit_bt = (Button) findViewById(R.id.update_bt_id);
-        delete_bt = (Button) findViewById(R.id.delete_bt_id);
+	@Override
+	public void onClick(View v)
+	{
+		switch( v.getId() )
+		{
+			case R.id.b_wifiUpdate_update:
+				wifiDAO.update(new Wifi(memberID, locationID, tv_bssid.getText().toString()));
+				break;
 
-        Intent i = getIntent();
-        String memberID = i.getStringExtra("memberID");
+			case R.id.b_wifiUpdate_delete:
+				wifiDAO.delete(memberID);
+				break;
+		}
 
-        String memberSSID = i.getStringExtra("memberSSID");
-        String memberBSSID = i.getStringExtra("memberBSSID");
-        String memberSignal = i.getStringExtra("memberSignal");
-        String memberPoschodie = i.getStringExtra("memberPoschodie");
-        String memberBlok = i.getStringExtra("memberBlok");
+		Intent home_intent = new Intent(getApplicationContext(), MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		startActivity(home_intent);
+	}
 
+	@Override
+	public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+	{
+		Location location = (Location)adapterView.getItemAtPosition(i);
+		locationID = location.getId();
+		Toast.makeText(this, String.valueOf(location.getId()), Toast.LENGTH_SHORT).show();
+	}
 
-        member_id = Long.parseLong(memberID);
+	@Override
+	public void onNothingSelected(AdapterView<?> adapterView)
+	{
 
-
-        ssid.setText(memberSSID);
-        bssid.setText(memberBSSID);
-        signal.setText(memberSignal);
-        poschodie.setText(memberPoschodie);
-        blok.setText(memberBlok);
-
-        blok.setText(memberBlok);
-
-
-        edit_bt.setOnClickListener(this);
-        delete_bt.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.update_bt_id:
-                String bssid_upd = bssid.getText().toString();
-                String ssid_upd = ssid.getText().toString();
-
-                String signal_upd = signal.getText().toString();
-                String poschodie_upd = poschodie.getText().toString();
-                String blok_upd = blok.getText().toString();
-
-                dbcon.updateData(member_id,ssid_upd,bssid_upd,signal_upd,poschodie_upd,blok_upd);
-                this.returnHome();
-                break;
-
-            case R.id.delete_bt_id:
-                dbcon.deleteData(member_id);
-                this.returnHome();
-                break;
-        }
-    }
-
-    public void returnHome() {
-
-        Intent home_intent = new Intent(getApplicationContext(),
-                MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-        startActivity(home_intent);
-    }
+	}
 }

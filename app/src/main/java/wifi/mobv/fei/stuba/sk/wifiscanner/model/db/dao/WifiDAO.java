@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.wifi.ScanResult;
 import android.provider.BaseColumns;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +66,7 @@ public class WifiDAO
 			// insert each entry into database
 			if( create(wifi.get(i)) == -1 )
 			{
+				Log.i(TAG, "wifi exists trying to update if has better signal");
 				// if entry exists try to update
 				SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -166,6 +168,18 @@ public class WifiDAO
 		return list;
 	}
 
+	public Cursor readWifiForLocation(Location location){
+
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		List<Wifi> list = new ArrayList<Wifi>();
+		String selectQuery = "SELECT * FROM " + WifiEntry.TABLE_NAME +
+				" WHERE "+ WifiEntry.COLUMN_NAME_ID_LOCATION+ "=" + location.getId() + ";";
+
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		return c;
+	}
+
 	public int update(Wifi wifi)
 	{
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -185,7 +199,7 @@ public class WifiDAO
 	{
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		// Define 'where' part of query.
-		String selection = WifiEntry._ID + " LIKE ?";
+		String selection = WifiEntry._ID + " = ?";
 		// Specify arguments in placeholder order.
 		String[] selectionArgs = {String.valueOf(wifiID)};
 		// Issue SQL statement.
@@ -204,19 +218,13 @@ public class WifiDAO
 		List<Wifi> list = readAll();
 		for( int i = 0; i < list.size(); ++i )
 		{
-			Wifi actual = list.get(i);
-			System.out.println(actual.getId() + " " +
-					actual.getLocationID() + " " +
-					actual.getBSSID() + " " +
-					actual.getSSID() + " " +
-					actual.getMaxLevel());
+			System.out.println(list.get(i));
 		}
 	}
 
 	public Location locateMe(List<ScanResult> wifiList)
 	{
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		List<Wifi> wifi = new ArrayList<Wifi>();
 
 		String[] tableColumns = new String[]{"Count(" + WifiEntry.COLUMN_NAME_ID_LOCATION + ")"};
 
@@ -228,6 +236,47 @@ public class WifiDAO
 			whereClause = whereClause + " OR " + WifiEntry.COLUMN_NAME_BSSID + " = ?";
 			whereArgs = new String[]{String.valueOf(whereArgs), wifiList.get(i).BSSID};
 		}
+
+		String orderBy = "Count(" + WifiEntry.COLUMN_NAME_ID_LOCATION + ") DESC";
+		String groupBy = WifiEntry.COLUMN_NAME_ID_LOCATION;
+
+		Cursor c = db.query(WifiEntry.TABLE_NAME, tableColumns, whereClause, whereArgs, groupBy, null, orderBy);
+
+		if( c != null )
+		{
+			c.moveToFirst();
+			//určenie polohy na základe ID_LOCATION
+			return controller.getLocationDAO().read(c.getLong(c.getColumnIndex(WifiEntry.COLUMN_NAME_ID_LOCATION)));
+		}
+
+		return null;
+	}
+
+	// ---------------------------------------
+
+	public Location locateMeDummy(List<Wifi> wifiList)
+	{
+		if( wifiList.isEmpty() )
+		{
+			return null;
+		}
+
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		String[] tableColumns = new String[]{WifiEntry.COLUMN_NAME_ID_LOCATION, "Count(" + WifiEntry.COLUMN_NAME_ID_LOCATION + ")"};
+
+		String whereClause = WifiEntry.COLUMN_NAME_BSSID + " = ?";
+		List<String> whereArgsList = new ArrayList<>();
+		whereArgsList.add(whereArgsList.size(), wifiList.get(0).getBSSID());
+
+		for( int i = 1; i < wifiList.size(); i++ )
+		{
+			whereClause = whereClause + " OR " + WifiEntry.COLUMN_NAME_BSSID + " = ?";
+			whereArgsList.add(i, wifiList.get(i).getBSSID());
+			//whereArgs = new String[]{String.valueOf(whereArgs), wifiList.get(i).getBSSID()};
+		}
+		String[] whereArgs = new String[whereArgsList.size()];
+		whereArgsList.toArray(whereArgs);
 
 		String orderBy = "Count(" + WifiEntry.COLUMN_NAME_ID_LOCATION + ") DESC";
 		String groupBy = WifiEntry.COLUMN_NAME_ID_LOCATION;

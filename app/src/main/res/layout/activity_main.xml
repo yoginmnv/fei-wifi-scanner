@@ -9,14 +9,28 @@
         android:id="@+id/b_create_location"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Create location"
+        android:text="Manage location"
         android:onClick="changeActivity"/>
 
     <Button
         android:id="@+id/addmem_bt_id"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="ADD MEMBER" />
+        android:text="ADD WIFI" />
+
+    <Button
+        android:id="@+id/b_wifi_manage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="changeActivity"
+        android:text="Manage wifi - Pato"/>
+
+    <Button
+        android:text="Wifi siete pre dany blok - Fero"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="changeActivity"
+        android:id="@+id/b_wifi_saved" />
 
     <ListView
         android:id="@+id/memberList_id"
