@@ -36,16 +36,18 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.manage_wifi);
 
-		ws = new WifiScanner(this);
-
+		// Chceckbox Scan automatically
 		cb_add_auto = (CheckBox)findViewById(R.id.cb_wifi_add_automatically);
+
+		// Spinner for choosing a location
 		s_blockFloor = (Spinner)findViewById(R.id.s_wifi_block_floor);
 
-		List<Location> list = SQLController.getInstance(this).getLocationDAO().readAll();
-		LocationAdapter locationAdapter = new LocationAdapter(this, R.layout.manage_wifi, list);
+		List<Location> locationList = SQLController.getInstance(this).getLocationDAO().readAll();
+		LocationAdapter locationAdapter = new LocationAdapter(this, R.layout.manage_wifi, locationList);
 		s_blockFloor.setAdapter(locationAdapter);
 		s_blockFloor.setOnItemSelectedListener(this);
 
+		// Start / Stop scan button
 		tb_scan = (ToggleButton)findViewById(R.id.tb_wifi_scan);
 		tb_scan.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -60,9 +62,12 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 			}
 		});
 
+		// Wi-Fi scanner
+		ws = new WifiScanner(this);
+
 		// Listview for Wi-Fi scans
 		ListView wifiScansListview = (ListView)findViewById(R.id.lv_wifi_available);
-		WifiScanAdapter wifiScanAdapter = new WifiScanAdapter(this, ws.getWifiList());
+		WifiScanAdapter wifiScanAdapter = new WifiScanAdapter(this);
 		wifiScansListview.setAdapter(wifiScanAdapter);
 
 	}
@@ -82,7 +87,7 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 	public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
 	{
 		Location location = (Location)adapterView.getItemAtPosition(i);
-		Toast.makeText(this, String.valueOf(location.getId()), Toast.LENGTH_SHORT).show();
+//		Toast.makeText(this, "Location changed", Toast.LENGTH_SHORT).show();
 	}
 
 	@Override

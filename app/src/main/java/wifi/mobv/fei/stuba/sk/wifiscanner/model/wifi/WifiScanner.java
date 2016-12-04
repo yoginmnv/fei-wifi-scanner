@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.ManageWifi;
 
 /**
@@ -29,17 +30,25 @@ public class WifiScanner {
 
     private WifiManager wifiManager;
     private WifiScanReceiver receiverWifi;
-    private List<ScanResult> wifiList;
+    private List<Wifi> wifiList;
 
     private int signalLevel = 0;
     private long scanDelay = 10000; // min scan delay 10 sec
 
     private ManageWifi manageWifiActivity;
+    private long idLocation;
 
     public WifiScanner(ManageWifi activity)
     {
-        manageWifiActivity = activity;
+        // Initialize list
         wifiList = new ArrayList<>();
+
+        // Set values
+        manageWifiActivity = activity;
+
+        // Default ID for location
+        // Used to initialize default value for Location ID in scanned Wifi object
+        idLocation = -1;
 
         // Manage all aspects of Wi-Fi connectivity
         wifiManager = (WifiManager) manageWifiActivity.getSystemService(Context.WIFI_SERVICE);
@@ -125,19 +134,15 @@ public class WifiScanner {
             if (!wifiList.isEmpty())
                 Toast.makeText(manageWifiActivity, "Wi-Fi scans updated", Toast.LENGTH_SHORT).show();
 
-            // Get scans
-            List<ScanResult> scanResults = wifiManager.getScanResults();
-
             // Delete old content
             wifiList.clear();
 
-            // Add scans to list
-            for (int i = 0; i < scanResults.size(); ++i) {
-                ScanResult res = scanResults.get(i);
-//                WifiScan wifiScan = new WifiScan(res.SSID, res.BSSID);
-//
-//                System.out.println(wifiScan.SSID + " - " + wifiScan.BSSID );
-                wifiList.add(res);
+            // Iterate through scans and create data
+            for (ScanResult res : wifiManager.getScanResults()) {
+                Wifi wifiScan = new Wifi(idLocation, res.BSSID, res.SSID, res.level);
+                wifiList.add(wifiScan);
+
+                System.out.println(wifiScan.getSSID()+ " - " + wifiScan.getBSSID());
             }
 
             // Update data in Listview
@@ -185,8 +190,10 @@ public class WifiScanner {
         }
     }
 
-    public List<ScanResult> getWifiList()
+    public List<Wifi> getWifiList()
     {
         return wifiList;
     }
+
+    public void setIdLocation(long idLocation) { this.idLocation = idLocation; }
 }
