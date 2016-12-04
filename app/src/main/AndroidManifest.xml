@@ -27,6 +27,7 @@
                   android:label="@string/app_name">
         </activity>
         <activity android:name=".view.ManageWifi"/>
+        <activity android:name=".view.AddWifi"/>
         <activity android:name=".view.SavedWifi" />
     </application>
 

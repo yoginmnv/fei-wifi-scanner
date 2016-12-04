@@ -11,12 +11,16 @@ import android.widget.EditText;
 import wifi.mobv.fei.stuba.sk.wifiscanner.MainActivity;
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
 
 /**
  * Created by Feri on 25.11.2016.
  */
 
 public class AddWifi extends AppCompatActivity implements OnClickListener {
+    public static String WIFI_SCAN_INTENT_ID = "wifi_scan_intent";
+    public static String LOCATION_ID_INTENT_ID = "location_id_intent";
+
     EditText ssid, bssid, signal, location;
     Button add_bt;
     SQLController dbcon;
@@ -38,6 +42,28 @@ public class AddWifi extends AppCompatActivity implements OnClickListener {
         dbcon.open();
         add_bt.setOnClickListener(this);
 
+        // Get data from intent
+        Intent intent = getIntent();
+
+        /// Get Wifi scan object
+        Wifi wifiScan = (Wifi) intent.getSerializableExtra(WIFI_SCAN_INTENT_ID);
+        if (wifiScan != null) {
+            ssid.setText(wifiScan.getSSID());
+            ssid.setEnabled(false);
+
+            bssid.setText(wifiScan.getBSSID());
+            bssid.setEnabled(false);
+
+            signal.setText(String.valueOf(wifiScan.getMaxLevel()));
+            signal.setEnabled(false);
+        }
+
+        /// Get location ID
+        long locationId = intent.getLongExtra(LOCATION_ID_INTENT_ID, -1);
+        if (locationId != -1) {
+            location.setText(String.valueOf(locationId));
+            location.setEnabled(false);
+        }
     }
 
     @Override
