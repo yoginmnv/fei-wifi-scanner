@@ -8,9 +8,14 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import wifi.mobv.fei.stuba.sk.wifiscanner.R;
+import wifi.mobv.fei.stuba.sk.wifiscanner.view.ManageWifi;
 
 /**
  * Created by maros on 29.11.2016.
@@ -18,28 +23,37 @@ import java.util.List;
 
 public class WifiScanner {
     private static final String TAG = "WifiScanner";
+
     private final Handler handler;
     private Runnable runnable;
+
     private WifiManager wifiManager;
     private WifiScanReceiver receiverWifi;
-    private int signalLevel = 0;
-    private long scanDelay = 4000; // min scan delay 3 sec
     private List<ScanResult> wifiList;
 
-    public WifiScanner(Context context)
+    private int signalLevel = 0;
+    private long scanDelay = 10000; // min scan delay 10 sec
+
+    private ManageWifi manageWifiActivity;
+
+    public WifiScanner(ManageWifi activity)
     {
-        handler = new Handler();
-        // manage all aspects of WIFI connectivity
-        wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        // enable automatic wifi
-        if( wifiManager.isWifiEnabled() == false )
-        {
+        manageWifiActivity = activity;
+        wifiList = new ArrayList<>();
+
+        // Manage all aspects of Wi-Fi connectivity
+        wifiManager = (WifiManager) manageWifiActivity.getSystemService(Context.WIFI_SERVICE);
+
+        // If is Wi-Fi disabled, enable it
+        if (wifiManager.isWifiEnabled() == false ) {
             wifiManager.setWifiEnabled(true);
+
+            Toast.makeText(manageWifiActivity, wifiList.isEmpty() ? "Wi-Fi scans received" : "Wi-Fi scans updated", Toast.LENGTH_SHORT).show();
         }
 
         receiverWifi = new WifiScanReceiver();
-        context.registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
 
+        handler = new Handler();
         runnable = new Runnable()
         {
             @Override
@@ -91,33 +105,44 @@ public class WifiScanner {
 
     public void startScan()
     {
-        Log.i(TAG, "startScan() -> run()");
+        manageWifiActivity.registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
         runnable.run();
+        System.out.println("Wi-Fi scan started...");
     }
 
     public void stopScan()
     {
-        Log.i(TAG, "stopScan() -> removeCallbacks()");
         handler.removeCallbacks(runnable);
+        manageWifiActivity.unregisterReceiver(receiverWifi);
+        System.out.println("Wi-Fi scan stopped...");
     }
 
-    class WifiScanReceiver extends BroadcastReceiver
-    {
-        public void onReceive(Context c, Intent intent)
-        {
-            System.out.println("");
-            ArrayList<String> connections = new ArrayList<String>();
-            wifiList = wifiManager.getScanResults(); // ACCESS_WIFI_STATE
+    class WifiScanReceiver extends BroadcastReceiver {
+        public void onReceive(Context c, Intent intent) {
+            System.out.println("Wi-Fi scans received...");
 
-            for( int i = 0; i < wifiList.size(); ++i )
-            {
-                ScanResult res = wifiList.get(i);
-                if( res.level < signalLevel )
-                {
-                    System.out.println(res.SSID + " - " + res.BSSID + " - " + res.level);
-                }
-                //dataSource.createWifi(new Wifi("C", "3", res.SSID, res.BSSID, res.level));
+            // Show Toast message on data update
+            if (!wifiList.isEmpty())
+                Toast.makeText(manageWifiActivity, "Wi-Fi scans updated", Toast.LENGTH_SHORT).show();
+
+            // Get scans
+            List<ScanResult> scanResults = wifiManager.getScanResults();
+
+            // Delete old content
+            wifiList.clear();
+
+            // Add scans to list
+            for (int i = 0; i < scanResults.size(); ++i) {
+                ScanResult res = scanResults.get(i);
+//                WifiScan wifiScan = new WifiScan(res.SSID, res.BSSID);
+//
+//                System.out.println(wifiScan.SSID + " - " + wifiScan.BSSID );
+                wifiList.add(res);
             }
+
+            // Update data in Listview
+            ListView listView = (ListView) manageWifiActivity.findViewById(R.id.lv_wifi_available);
+            ((WifiScanAdapter) listView.getAdapter()).updateList(wifiList);
         }
     }
 
