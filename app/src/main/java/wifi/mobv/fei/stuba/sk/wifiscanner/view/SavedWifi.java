@@ -33,12 +33,11 @@ public class SavedWifi extends AppCompatActivity implements AdapterView.OnItemSe
         setContentView(R.layout.saved_wifis);
 
         lv_WifiSaved = (ListView) findViewById(R.id.lv_wifi_saved);
-        s_blockFloor = (Spinner)findViewById(R.id.s_wifi_block_floor);
+        s_blockFloor = (Spinner)findViewById(R.id.s_wifiSaved_blockFloor);
         List<Location> list = SQLController.getInstance(this).getLocationDAO().readAll();
         LocationAdapter adapter = new LocationAdapter(this, R.layout.manage_wifi, list);
         s_blockFloor.setAdapter(adapter);
         s_blockFloor.setOnItemSelectedListener(this);
-
     }
 
     @Override

@@ -51,4 +51,14 @@ public class Location
 	{
 		this.floor = floor;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Location{" +
+				"id=" + id +
+				", blockName='" + blockName + '\'' +
+				", floor='" + floor + '\'' +
+				'}';
+	}
 }

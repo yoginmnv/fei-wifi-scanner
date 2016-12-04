@@ -157,11 +157,7 @@ public class LocationDAO
 		List<Location> list = readAll();
 		for( int i = 0; i < list.size(); ++i )
 		{
-			Location actual = list.get(i);
-			System.out.println(
-					actual.getId() + " " +
-					actual.getBlockName() + " " +
-					actual.getFloor());
+			System.out.println(list.get(i));
 		}
 	}
 

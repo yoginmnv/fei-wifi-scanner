@@ -216,12 +216,7 @@ public class WifiDAO
 		List<Wifi> list = readAll();
 		for( int i = 0; i < list.size(); ++i )
 		{
-			Wifi actual = list.get(i);
-			System.out.println(actual.getId() + " " +
-					actual.getLocationID() + " " +
-					actual.getBSSID() + " " +
-					actual.getSSID() + " " +
-					actual.getMaxLevel());
+			System.out.println(list.get(i));
 		}
 	}
 

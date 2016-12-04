@@ -16,7 +16,7 @@
             android:text="Select block and floor:"/>
 
         <Spinner
-            android:id="@+id/s_wifi_block_floor"
+            android:id="@+id/s_wifiSaved_blockFloor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </Spinner>
