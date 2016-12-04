@@ -1,11 +1,12 @@
 package wifi.mobv.fei.stuba.sk.wifiscanner.model.db;
 
+import java.io.Serializable;
+
 /**
  * Created by maros on 1.12.2016.
  */
 
-public class Wifi
-{
+public class Wifi implements Serializable {
 	public Wifi(long id, long idLocation, String BSSID, String SSID, int maxLevel)
 	{
 		this.id = id;

@@ -1,5 +1,6 @@
 package wifi.mobv.fei.stuba.sk.wifiscanner.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -30,6 +31,8 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 	private Spinner s_blockFloor;
 	private ToggleButton tb_scan;
 
+	private List<Location> locationList;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -42,7 +45,7 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 		// Spinner for choosing a location
 		s_blockFloor = (Spinner)findViewById(R.id.s_wifi_block_floor);
 
-		List<Location> locationList = SQLController.getInstance(this).getLocationDAO().readAll();
+		locationList = SQLController.getInstance(this).getLocationDAO().readAll();
 		LocationAdapter locationAdapter = new LocationAdapter(this, R.layout.manage_wifi, locationList);
 		s_blockFloor.setAdapter(locationAdapter);
 		s_blockFloor.setOnItemSelectedListener(this);
@@ -69,6 +72,23 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 		ListView wifiScansListview = (ListView)findViewById(R.id.lv_wifi_available);
 		WifiScanAdapter wifiScanAdapter = new WifiScanAdapter(this);
 		wifiScansListview.setAdapter(wifiScanAdapter);
+
+		wifiScansListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+				Intent intent = new Intent(ManageWifi.this, AddWifi.class);
+
+				// Selected Wi-fi network scan
+				intent.putExtra(AddWifi.WIFI_SCAN_INTENT_ID, ws.getWifiList().get(position));
+
+				// Selected location ID
+				Location selectedLocation = (Location)s_blockFloor.getSelectedItem();
+				if (selectedLocation != null)
+					intent.putExtra(AddWifi.LOCATION_ID_INTENT_ID, selectedLocation.getId());
+
+				startActivity(intent);
+			}
+		});
 
 	}
 
