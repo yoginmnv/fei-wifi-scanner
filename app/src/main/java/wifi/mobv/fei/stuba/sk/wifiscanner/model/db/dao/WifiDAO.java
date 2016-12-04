@@ -166,6 +166,18 @@ public class WifiDAO
 		return list;
 	}
 
+	public Cursor readWifiForLocation(Location location){
+
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		List<Wifi> list = new ArrayList<Wifi>();
+		String selectQuery = "SELECT * FROM " + WifiEntry.TABLE_NAME +
+				" WHERE "+ WifiEntry.COLUMN_NAME_ID_LOCATION+ "=" + location.getId() + ";";
+
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		return c;
+	}
+
 	public int update(Wifi wifi)
 	{
 		SQLiteDatabase db = dbHelper.getWritableDatabase();

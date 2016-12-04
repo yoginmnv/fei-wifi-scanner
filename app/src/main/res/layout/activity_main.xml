@@ -26,9 +26,11 @@
         android:text="Manage wifi - Pato"/>
 
     <Button
+        android:text="Wifi siete pre dany blok - Fero"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Wifi siete pre dany blok - Fero"/>
+        android:onClick="changeActivity"
+        android:id="@+id/b_wifi_saved" />
 
     <ListView
         android:id="@+id/memberList_id"
