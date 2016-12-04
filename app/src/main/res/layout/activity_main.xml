@@ -20,11 +20,11 @@
         android:text="Manage wifi"/>
 
     <Button
-        android:text="Wifi siete pre dany blok - Fero"
+        android:id="@+id/b_wifi_saved"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="changeActivity"
-        android:id="@+id/b_wifi_saved" />
+        android:text="Wifi networks for blocks"/>
 
     <Button
         android:layout_width="match_parent"
