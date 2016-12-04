@@ -17,6 +17,7 @@ import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.WifiDAO;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.AddLocation;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.AddWifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.ManageWifi;
+import wifi.mobv.fei.stuba.sk.wifiscanner.view.SavedWifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.UpdateWifi;
 
 public class MainActivity extends AppCompatActivity {
@@ -96,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
 			case R.id.b_wifi_manage:
 				intent = new Intent(this, ManageWifi.class);
+                break;
+
+            case R.id.b_wifi_saved:
+                intent = new Intent(this, SavedWifi.class);
+                break;
+
         }
 
         if( intent != null )
