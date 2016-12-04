@@ -36,6 +36,9 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.manage_wifi);
 
+		// Wi-Fi scanner
+		ws = new WifiScanner(this);
+
 		// Chceckbox Scan automatically
 		cb_add_auto = (CheckBox)findViewById(R.id.cb_wifi_add_automatically);
 
@@ -62,8 +65,6 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 			}
 		});
 
-		// Wi-Fi scanner
-		ws = new WifiScanner(this);
 
 		// Listview for Wi-Fi scans
 		ListView wifiScansListview = (ListView)findViewById(R.id.lv_wifi_available);

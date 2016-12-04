@@ -37,6 +37,25 @@ public class WifiScanner {
 
     private ManageWifi manageWifiActivity;
     private long idLocation;
+    private boolean localizing = false;
+
+    public WifiScanner(Context context)
+    {
+        handler = new Handler();
+        // manage all aspects of WIFI connectivity
+        wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        // enable automatic wifi
+        if( wifiManager.isWifiEnabled() == false )
+        {
+            wifiManager.setWifiEnabled(true);
+        }
+
+        receiverWifi = new WifiScanReceiver();
+        context.registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
+
+
+        wifiManager.startScan();
+    }
 
     public WifiScanner(ManageWifi activity)
     {
@@ -73,44 +92,6 @@ public class WifiScanner {
             }
         };
     }
-
-//    public void location(Activity a)
-//    {
-////    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-////    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-//        LocationManager locationManager = (LocationManager) a.getSystemService(Context.LOCATION_SERVICE);
-//        if (ActivityCompat.checkSelfPermission(a, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(a, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-//            // here to request the missing permissions, and then overriding
-//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//            //                                          int[] grantResults)
-//            // to handle the case where the user grants the permission. See the documentation
-//            // for ActivityCompat#requestPermissions for more details.
-//            return;
-//        }
-//        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
-//            @Override
-//            public void onLocationChanged(Location location) {
-//
-//            }
-//
-//            @Override
-//            public void onStatusChanged(String s, int i, Bundle bundle) {
-//
-//            }
-//
-//            @Override
-//            public void onProviderEnabled(String s) {
-//
-//            }
-//
-//            @Override
-//            public void onProviderDisabled(String s) {
-//
-//            }
-//        });
-//    }
 
     public void startScan()
     {
