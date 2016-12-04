@@ -41,6 +41,6 @@ captures/
 
 # other
 /.idea/libraries
+/.idea/modules.xml
 .DS_Store
 .externalNativeBuild
-modules.xml
