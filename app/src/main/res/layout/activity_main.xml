@@ -6,7 +6,7 @@
     android:padding="10dp">
 
     <Button
-        android:id="@+id/b_create_location"
+        android:id="@+id/b_location_manage"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Manage location"
