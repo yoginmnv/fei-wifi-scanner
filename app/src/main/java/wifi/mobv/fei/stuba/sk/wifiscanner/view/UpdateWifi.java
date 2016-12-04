@@ -62,7 +62,7 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener,
 		tv_bssid.setText(i.getStringExtra("memberBSSID"));
 
 		// treba overit ci to funguje a co sa vlastne posiela do memberLocation
-		s_blockFloor.setSelection((int)adapter.getItemId(Integer.parseInt(i.getStringExtra("memberLocation"))));
+		s_blockFloor.setSelection((int)adapter.getItemId(Integer.parseInt(i.getStringExtra("memberLocation")))-1);
 
 		b_update.setOnClickListener(this);
 		b_delete.setOnClickListener(this);
