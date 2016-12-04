@@ -32,6 +32,17 @@
         android:onClick="changeActivity"
         android:id="@+id/b_wifi_saved" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="locateMe"
+        android:text="Locate me"/>
+
+    <TextView
+        android:id="@+id/tv_main_locationResult"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <ListView
         android:id="@+id/memberList_id"
         android:layout_width="match_parent"

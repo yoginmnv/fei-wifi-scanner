@@ -19,6 +19,7 @@ import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.WifiDAO;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.wifi.WifiScanner;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.AddLocation;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.AddWifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.ManageWifi;
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity
 	Button addmem_bt;
 	ListView lv;
 	TextView memID_tv, memBlok_tv, memMac_tv;
+	TextView tv_locationResult;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -94,6 +96,8 @@ public class MainActivity extends AppCompatActivity
 				startActivity(modify_intent);
 			}
 		});
+
+		tv_locationResult = (TextView)findViewById(R.id.tv_main_locationResult);
 	}
 
 	public void changeActivity(View view)
@@ -119,6 +123,12 @@ public class MainActivity extends AppCompatActivity
 		{
 			startActivity(intent);
 		}
+	}
+
+	public void locateMe(View view)
+	{
+		WifiScanner ws = new WifiScanner(this);
+		tv_locationResult.setText("Retriving location");
 	}
 
 	public void createDummyData()
