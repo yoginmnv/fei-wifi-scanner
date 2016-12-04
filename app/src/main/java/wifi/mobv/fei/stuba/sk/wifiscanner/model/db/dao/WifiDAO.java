@@ -213,6 +213,16 @@ public class WifiDAO
 		return db.delete(WifiEntry.TABLE_NAME, "1", null);
 	}
 
+	public int deleteForLocation(long id){
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		String whereClause = WifiEntry.COLUMN_NAME_ID_LOCATION + " = ?";
+		String[] whereArgs = {String.valueOf(id)};
+
+		return db.delete(WifiEntry.TABLE_NAME,whereClause,whereArgs);
+
+	}
+
 	public void printAll()
 	{
 		List<Wifi> list = readAll();
