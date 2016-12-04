@@ -9,7 +9,7 @@
         android:id="@+id/b_create_location"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Create location"
+        android:text="Manage location"
         android:onClick="changeActivity"/>
 
     <Button
@@ -17,6 +17,18 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="ADD WIFI" />
+
+    <Button
+        android:id="@+id/b_wifi_manage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="changeActivity"
+        android:text="Manage wifi"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Wifi siete pre dany blok"/>
 
     <ListView
         android:id="@+id/memberList_id"

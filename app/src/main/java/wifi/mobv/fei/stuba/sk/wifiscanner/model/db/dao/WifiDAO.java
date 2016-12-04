@@ -185,7 +185,7 @@ public class WifiDAO
 	{
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		// Define 'where' part of query.
-		String selection = WifiEntry._ID + " LIKE ?";
+		String selection = WifiEntry._ID + " = ?";
 		// Specify arguments in placeholder order.
 		String[] selectionArgs = {String.valueOf(wifiID)};
 		// Issue SQL statement.

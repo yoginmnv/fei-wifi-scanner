@@ -15,6 +15,13 @@ public class Wifi
 		this.maxLevel = maxLevel;
 	}
 
+	public Wifi(long id, long idLocation, String SSID)
+	{
+		this.id = id;
+		this.idLocation = idLocation;
+		this.SSID = SSID;
+	}
+
 	public Wifi(long idLocation, String BSSID, String SSID, int maxLevel)
 	{
 		this.idLocation = idLocation;
