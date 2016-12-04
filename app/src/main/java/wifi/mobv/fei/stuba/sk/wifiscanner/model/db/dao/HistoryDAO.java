@@ -142,10 +142,7 @@ public class HistoryDAO
 		List<History> list = readAll();
 		for( int i = 0; i < list.size(); ++i )
 		{
-			History actual = list.get(i);
-			System.out.println(actual.getId() + " " +
-					actual.getLocationID() + " " +
-					actual.getDate());
+			System.out.println(list.get(i));
 		}
 	}
 
