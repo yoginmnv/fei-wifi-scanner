@@ -49,14 +49,20 @@ public class AddWifi extends AppCompatActivity implements OnClickListener {
         Wifi wifiScan = (Wifi) intent.getSerializableExtra(WIFI_SCAN_INTENT_ID);
         if (wifiScan != null) {
             ssid.setText(wifiScan.getSSID());
+            ssid.setEnabled(false);
+
             bssid.setText(wifiScan.getBSSID());
+            bssid.setEnabled(false);
+
             signal.setText(String.valueOf(wifiScan.getMaxLevel()));
+            signal.setEnabled(false);
         }
 
         /// Get location ID
         long locationId = intent.getLongExtra(LOCATION_ID_INTENT_ID, -1);
         if (locationId != -1) {
             location.setText(String.valueOf(locationId));
+            location.setEnabled(false);
         }
     }
 
