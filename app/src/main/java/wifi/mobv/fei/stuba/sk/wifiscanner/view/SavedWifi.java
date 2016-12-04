@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -17,7 +16,6 @@ import wifi.mobv.fei.stuba.sk.wifiscanner.R;
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.LocationAdapter;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
-import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.WifiDAO;
 
 /**
@@ -63,7 +61,7 @@ public class SavedWifi extends AppCompatActivity implements AdapterView.OnItemSe
 
         adapter.notifyDataSetChanged();
         lv_WifiSaved.setAdapter(adapter);
-        
+
     }
 
     @Override
