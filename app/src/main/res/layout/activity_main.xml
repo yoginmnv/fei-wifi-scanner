@@ -23,12 +23,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="changeActivity"
-        android:text="Manage wifi"/>
+        android:text="Manage wifi - Pato"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Wifi siete pre dany blok"/>
+        android:text="Wifi siete pre dany blok - Fero"/>
 
     <ListView
         android:id="@+id/memberList_id"
