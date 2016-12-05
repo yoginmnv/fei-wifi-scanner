@@ -8,7 +8,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import wifi.mobv.fei.stuba.sk.wifiscanner.MainActivity;
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
@@ -77,8 +76,7 @@ public class AddWifi extends AppCompatActivity implements OnClickListener {
 
                 dbcon.insertData(ssid_new, bssid_new, signal_new, id_location);
 
-                Intent main = new Intent(AddWifi.this, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(main);
+                finish();
                 break;
 
             default:
