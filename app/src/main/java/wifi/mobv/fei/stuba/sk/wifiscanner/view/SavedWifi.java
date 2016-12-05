@@ -38,29 +38,28 @@ public class SavedWifi extends AppCompatActivity implements AdapterView.OnItemSe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.saved_wifis);
 
-        lv_WifiSaved = (ListView) findViewById(R.id.lv_wifi_saved);
         s_blockFloor = (Spinner)findViewById(R.id.s_wifiSaved_blockFloor);
         List<Location> list = SQLController.getInstance(this).getLocationDAO().readAll();
         LocationAdapter adapter = new LocationAdapter(this, R.layout.manage_wifi, list);
         s_blockFloor.setAdapter(adapter);
         s_blockFloor.setOnItemSelectedListener(this);
 
+        lv_WifiSaved = (ListView) findViewById(R.id.lv_wifi_saved);
         lv_WifiSaved.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 TextView memID_tv = (TextView) view.findViewById(R.id.tv_wifi_saved_id);
 
-                String memberID_val = memID_tv.getText().toString();
-                Cursor cursor = SQLController.getInstance(SavedWifi.this).readDataById(memberID_val);
+                Long wifiID = Long.valueOf(memID_tv.getText().toString());
+                Cursor cursor = SQLController.getInstance(SavedWifi.this).getWifiDAO().read(wifiID);
 
                 Intent modify_intent = new Intent(getApplicationContext(), UpdateWifi.class);
-                modify_intent.putExtra("memberID", memberID_val);
+                modify_intent.putExtra("memberID", cursor.getString(0));
                 modify_intent.putExtra("memberLocation",cursor.getString(1));
                 modify_intent.putExtra("memberBSSID", cursor.getString(2));
                 modify_intent.putExtra("memberSSID",cursor.getString(3));
                 modify_intent.putExtra("memberSignal",cursor.getString(4));
-
 
                 startActivity(modify_intent);
             }
@@ -75,20 +74,19 @@ public class SavedWifi extends AppCompatActivity implements AdapterView.OnItemSe
 
         String[] from = new String[] {
                 WifiDAO.WifiEntry._ID,
-                WifiDAO.WifiEntry.COLUMN_NAME_BSSID,
-                WifiDAO.WifiEntry.COLUMN_NAME_SSID
+                WifiDAO.WifiEntry.COLUMN_NAME_SSID,
+                WifiDAO.WifiEntry.COLUMN_NAME_BSSID
         };
         int[] to = new int[] {
                 R.id.tv_wifi_saved_id,
-                R.id.tv_wifi_saved_BSSID,
-                R.id.tv_wifi_saved_SSID
+                R.id.tv_wifi_saved_SSID,
+                R.id.tv_wifi_saved_BSSID
         };
 
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this, R.layout.view_wifis_saved, cursor, from, to);
-
         adapter.notifyDataSetChanged();
-        lv_WifiSaved.setAdapter(adapter);
 
+        lv_WifiSaved.setAdapter(adapter);
     }
 
     @Override
