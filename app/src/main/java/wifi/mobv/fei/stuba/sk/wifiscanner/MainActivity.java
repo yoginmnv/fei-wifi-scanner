@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
@@ -22,20 +21,11 @@ import wifi.mobv.fei.stuba.sk.wifiscanner.view.SavedWifi;
 
 public class MainActivity extends AppCompatActivity
 {
-	TextView tv_locationResult;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-
-		SQLController instance = SQLController.getInstance(this);
-		instance.getLocationDAO().printAll();
-		System.out.println("");
-		instance.getWifiDAO().printAll();
-
-		tv_locationResult = (TextView)findViewById(R.id.tv_main_locationResult);
 	}
 
 	public void changeActivity(View view)
@@ -47,6 +37,7 @@ public class MainActivity extends AppCompatActivity
 			case R.id.b_location_manage:
 				intent = new Intent(this, AddLocation.class);
 				break;
+
 			case R.id.b_wifi_manage:
 				intent = new Intent(this, ManageWifi.class);
 				break;
@@ -64,8 +55,7 @@ public class MainActivity extends AppCompatActivity
 
 	public void locateMe(View view)
 	{
-		WifiScanner ws = new WifiScanner(MainActivity.this);
-		tv_locationResult.setText("Retriving location");
+		new WifiScanner(MainActivity.this);
 	}
 
 	public void createDummyData()
@@ -93,6 +83,6 @@ public class MainActivity extends AppCompatActivity
 		wifiDAO.printAll();
 
 		Location location = wifiDAO.locateMeDummy(list);
-		System.out.println("Here you are" + location.toString());
+		System.out.println("Here you are " + location.toString());
 	}
 }

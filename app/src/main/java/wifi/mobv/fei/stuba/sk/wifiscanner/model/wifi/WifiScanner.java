@@ -37,7 +37,7 @@ public class WifiScanner
 {
     private static final String TAG = "WifiScanner";
 
-    private final Handler handler;
+    private Handler handler;
     private Runnable runnable;
 
     private WifiManager wifiManager;
@@ -54,10 +54,9 @@ public class WifiScanner
 
     public WifiScanner(MainActivity context)
     {
-		// Initialize list
-		locateMe = true;
         activity = context;
-        handler = new Handler();
+		locateMe = true;
+
         // manage all aspects of WIFI connectivity
         wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         // enable automatic wifi
@@ -68,7 +67,7 @@ public class WifiScanner
 
         receiverWifi = new WifiScanReceiver();
         context.registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-
+		((TextView)manageWifiActivity.findViewById(R.id.tv_main_locationResult)).setText("Retriving location");
         wifiManager.startScan();
     }
 
