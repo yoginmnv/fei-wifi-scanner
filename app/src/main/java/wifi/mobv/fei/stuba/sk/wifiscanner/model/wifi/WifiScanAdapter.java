@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
-import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
-import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.ManageWifi;
 
@@ -26,8 +24,6 @@ public class WifiScanAdapter extends BaseAdapter implements View.OnClickListener
     private List<Wifi> wifiList;
     private static LayoutInflater inflater;
 
-    SQLController sqlController;
-
     public WifiScanAdapter(ManageWifi activity)
     {
         // Initialize list
@@ -35,8 +31,6 @@ public class WifiScanAdapter extends BaseAdapter implements View.OnClickListener
 
         // Layout inflater
         inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        sqlController = new SQLController(activity);
     }
 
     public int getCount()
@@ -64,7 +58,7 @@ public class WifiScanAdapter extends BaseAdapter implements View.OnClickListener
         public TextView tv_BSSID;
 
         // LocationId
-        public TextView tv_location;
+        public TextView tv_locationId;
 
         public TextView tv_signalLevel;
     }
@@ -82,7 +76,7 @@ public class WifiScanAdapter extends BaseAdapter implements View.OnClickListener
             viewHolder = new ViewHolder();
             viewHolder.tv_SSID = (TextView)convertView.findViewById(R.id.WifiScanTextSSID);
             viewHolder.tv_BSSID = (TextView)convertView.findViewById(R.id.WifiScanTextBSSID);
-            viewHolder.tv_location = (TextView)convertView.findViewById(R.id.WifiScanTextLocationId);
+            viewHolder.tv_locationId = (TextView)convertView.findViewById(R.id.WifiScanTextLocationId);
             viewHolder.tv_signalLevel = (TextView)convertView.findViewById(R.id.WifiScanTextSignalLevel);
 
             convertView.setTag(viewHolder);
@@ -100,10 +94,8 @@ public class WifiScanAdapter extends BaseAdapter implements View.OnClickListener
         viewHolder.tv_BSSID.setText("BSSID: " + wifiScan.getBSSID());
 
         long locationId = wifiScan.getLocationID();
-        // Get name of the location of Wi-Fi network
-        Location location = sqlController.getLocationDAO().read(locationId);
-        String locationStr = (location != null ? location.getBlockName() + location.getFloor() : "Unknown");
-        viewHolder.tv_location.setText("Location: " + locationStr);
+        // When locationID is set to it's default value -1, the text in Textview is substituted to string "Not available"
+        viewHolder.tv_locationId.setText("Location ID: " + (locationId != -1 ? String.valueOf(locationId) : "Not available"));
 
         viewHolder.tv_signalLevel.setText("Signal level: " + wifiScan.getMaxLevel());
 

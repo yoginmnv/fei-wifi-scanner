@@ -112,6 +112,34 @@ public class HistoryDAO
 		return list;
 	}
 
+	public History readLatest(long locationID)
+	{
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		String selectQuery = "SELECT " + HistoryEntry.COLUMN_NAME_DATE +
+				" FROM " + HistoryEntry.TABLE_NAME +
+				" WHERE " + HistoryEntry.COLUMN_NAME_ID_LOCATION + " = " + locationID +
+				" ORDER BY " + HistoryEntry.COLUMN_NAME_DATE + " DESC LIMIT 1;";
+
+		Cursor c = db.rawQuery(selectQuery, null);
+
+		if( c != null )
+		{
+			if( c.moveToFirst() )
+			{
+				History h = new History();
+				h.setDate(c.getString(c.getColumnIndex(HistoryEntry.COLUMN_NAME_DATE)));
+
+				return h;
+			} else
+			{
+				Log.w(TAG, "Location not found");
+			}
+		}
+
+		return null;
+	}
+
 	public int update(History history)
 	{
 		SQLiteDatabase db = dbHelper.getWritableDatabase();

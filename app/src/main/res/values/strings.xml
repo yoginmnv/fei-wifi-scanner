@@ -7,4 +7,5 @@
     <string name="db_item_updated">Item was successfully updated</string>
     <string name="db_item_delted">Item was successfully deleted</string>
     <string name="db_item_exists">Item already exists in database</string>
+    <string name="location_last_scan">Last scan for actual location: </string>
 </resources>

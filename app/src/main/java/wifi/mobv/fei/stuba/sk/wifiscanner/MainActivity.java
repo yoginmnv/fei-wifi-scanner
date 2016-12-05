@@ -8,12 +8,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.LocationDAO;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.dao.WifiDAO;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.wifi.WifiScanner;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.AddLocation;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.ManageWifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.SavedWifi;
@@ -27,6 +29,11 @@ public class MainActivity extends AppCompatActivity
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		SQLController instance = SQLController.getInstance(this);
+		instance.getLocationDAO().printAll();
+		System.out.println("");
+		instance.getWifiDAO().printAll();
 
 		tv_locationResult = (TextView)findViewById(R.id.tv_main_locationResult);
 	}
@@ -57,7 +64,7 @@ public class MainActivity extends AppCompatActivity
 
 	public void locateMe(View view)
 	{
-		//WifiScanner ws = new WifiScanner(this);
+		WifiScanner ws = new WifiScanner(MainActivity.this);
 		tv_locationResult.setText("Retriving location");
 	}
 

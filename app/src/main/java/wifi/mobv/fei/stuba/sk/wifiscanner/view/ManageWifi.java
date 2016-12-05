@@ -8,15 +8,18 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.List;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.History;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.wifi.WifiScanAdapter;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.LocationAdapter;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
-import wifi.mobv.fei.stuba.sk.wifiscanner.model.wifi.WifiScanAdapter;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.wifi.WifiScanner;
 
 /**
@@ -25,12 +28,15 @@ import wifi.mobv.fei.stuba.sk.wifiscanner.model.wifi.WifiScanner;
 
 public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemSelectedListener
 {
+	private SQLController controller;
 	private WifiScanner ws;
 	private CheckBox cb_add_auto;
 	private Spinner s_blockFloor;
 	private ToggleButton tb_scan;
+	private TextView tv_lastScan;
 
 	private List<Location> locationList;
+	private Long actualLocationID;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -38,6 +44,7 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.manage_wifi);
 
+		controller = SQLController.getInstance(this);
 		// Wi-Fi scanner
 		ws = new WifiScanner(this);
 
@@ -47,10 +54,11 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 		// Spinner for choosing a location
 		s_blockFloor = (Spinner)findViewById(R.id.s_wifi_block_floor);
 
-		locationList = SQLController.getInstance(this).getLocationDAO().readAll();
+		locationList = controller.getLocationDAO().readAll();
 		LocationAdapter locationAdapter = new LocationAdapter(this, R.layout.manage_wifi, locationList);
 		s_blockFloor.setAdapter(locationAdapter);
 		s_blockFloor.setOnItemSelectedListener(this);
+
 
 		// Start / Stop scan button
 		tb_scan = (ToggleButton)findViewById(R.id.tb_wifi_scan);
@@ -60,6 +68,7 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 			{
 				if(tb_scan.isChecked() ) {
 					ws.startScan();
+					controller.getHistoryDAO().create(new History(actualLocationID));
 				}
 				else {
 					ws.stopScan();
@@ -90,6 +99,9 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 			}
 		});
 
+		tv_lastScan = (TextView)findViewById(R.id.tv_savedWifis_lastScan);
+		actualLocationID = ((Location)s_blockFloor.getSelectedItem()).getId();
+		setLastScanDate(controller.getHistoryDAO().readLatest(actualLocationID));
 	}
 
 	protected void onPause()
@@ -107,6 +119,8 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 	public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
 	{
 		Location location = (Location)adapterView.getItemAtPosition(i);
+		actualLocationID = location.getId();
+		setLastScanDate(controller.getHistoryDAO().readLatest(actualLocationID));
 //		Toast.makeText(this, "Location changed", Toast.LENGTH_SHORT).show();
 	}
 
@@ -114,5 +128,22 @@ public class ManageWifi extends AppCompatActivity implements AdapterView.OnItemS
 	public void onNothingSelected(AdapterView<?> adapterView)
 	{
 
+	}
+
+	public void setLastScanDate(History h)
+	{
+		if( h == null )
+		{
+			tv_lastScan.setText(getResources().getString(R.string.location_last_scan) + " newer");
+		}
+		else
+		{
+			tv_lastScan.setText(getResources().getString(R.string.location_last_scan) + " " + h.getDate());
+		}
+	}
+
+	public Long getActualLocationID()
+	{
+		return actualLocationID;
 	}
 }

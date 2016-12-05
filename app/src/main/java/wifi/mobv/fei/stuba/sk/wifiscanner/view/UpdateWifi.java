@@ -83,7 +83,7 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener,
 				break;
 		}
 
-		Intent home_intent = new Intent(getApplicationContext(), SavedWifi.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		Intent home_intent = new Intent(getApplicationContext(), MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(home_intent);
 	}
 
