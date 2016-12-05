@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
@@ -74,7 +75,10 @@ public class AddWifi extends AppCompatActivity implements OnClickListener {
                 String signal_new = signal.getText().toString();
                 String id_location = location.getText().toString();
 
-                dbcon.insertData(ssid_new, bssid_new, signal_new, id_location);
+                // Get the ID of newly inserted row. Value is -1 when error occured
+                long insertRowId = dbcon.insertData(ssid_new, bssid_new, signal_new, id_location);
+
+                Toast.makeText(this, insertRowId != -1 ? "Wi-Fi network was succesfully inserted" : "Error: Wi-Fi network was not inserted", Toast.LENGTH_LONG).show();
 
                 finish();
                 break;

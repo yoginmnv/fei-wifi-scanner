@@ -56,14 +56,14 @@ public class SQLController {
         dbhelper.close();
     }
 
-    public void insertData(String ssid, String bssid, String max_signal, String id_location) {
+    public long insertData(String ssid, String bssid, String max_signal, String id_location) {
         ContentValues cv = new ContentValues();
         cv.put(WifiDAO.WifiEntry.COLUMN_NAME_SSID,ssid);
         cv.put(WifiDAO.WifiEntry.COLUMN_NAME_BSSID,bssid);
         cv.put(WifiDAO.WifiEntry.COLUMN_NAME_MAX_LEVEL,max_signal);
         cv.put(WifiDAO.WifiEntry.COLUMN_NAME_ID_LOCATION, id_location);
 
-        database.insert(WifiDAO.WifiEntry.TABLE_NAME, null, cv);
+        return database.insert(WifiDAO.WifiEntry.TABLE_NAME, null, cv);
     }
 
     public Cursor readData() {
