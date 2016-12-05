@@ -20,6 +20,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
         </Spinner>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Clear list"
+            android:onClick="deleteAllWifiFromList"
+            />
+
     </LinearLayout>
 
     <View style="@style/divider">
@@ -28,7 +36,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Available WiFi networks:"/>
+        android:text="Saved WiFi networks:"/>
 
     <ListView
         android:id="@+id/lv_wifi_saved"

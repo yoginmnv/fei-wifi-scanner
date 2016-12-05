@@ -1,93 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp" >
 
-    <TextView
-        android:id="@+id/AddWifiLabelSSID"
-        android:layout_width="75dp"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
-        android:text="SSID:"
-        android:gravity="center"/>
-
     <EditText
         android:id="@+id/SSID_new"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/AddWifiLabelSSID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:ems="10"
+        android:layout_marginTop="40dp"
         android:hint="SSID">
 
         <requestFocus />
     </EditText>
 
-    <TextView
-        android:id="@+id/AddWifiLabelBSSID"
-        android:layout_width="75dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/AddWifiLabelSSID"
-        android:layout_alignParentLeft="true"
-        android:text="BSSID:"
-        android:gravity="center"/>
-
     <EditText
         android:id="@+id/BSSID_new"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/SSID_new"
-        android:layout_toRightOf="@+id/AddWifiLabelBSSID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:hint="BSSID">
 
         <requestFocus />
     </EditText>
 
-    <TextView
-        android:id="@+id/AddWifiLabelSignalLevel"
-        android:layout_width="75dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/AddWifiLabelBSSID"
-        android:layout_alignParentLeft="true"
-        android:text="Signal level:"
-        android:gravity="center"/>
-
     <EditText
         android:id="@+id/signal_new"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/BSSID_new"
-        android:layout_toRightOf="@id/AddWifiLabelSignalLevel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Max. signal level">
+        android:hint="max. signal">
 
         <requestFocus />
     </EditText>
 
-    <TextView
-        android:id="@+id/AddWifiLabelLocation"
-        android:layout_width="75dp"
-        android:layout_height="50dp"
-        android:layout_below="@+id/AddWifiLabelSignalLevel"
-        android:layout_alignParentLeft="true"
-        android:text="Location ID:"
-        android:gravity="center"/>
-
     <EditText
         android:id="@+id/location_new"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/signal_new"
-        android:layout_toRightOf="@id/AddWifiLabelLocation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Location ID">
+        android:hint="location">
 
         <requestFocus />
     </EditText>
@@ -96,10 +51,8 @@
     <Button
         android:id="@+id/add_bt_id"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_below="@id/location_new"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
         android:text="ADD" />
 
-</RelativeLayout>
+</LinearLayout>
