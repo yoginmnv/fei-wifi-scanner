@@ -44,3 +44,7 @@ captures/
 /.idea/modules.xml
 .DS_Store
 .externalNativeBuild
+.idea/gradle.xml
+.idea/modules.xml
+.idea/vcs.xml
+
