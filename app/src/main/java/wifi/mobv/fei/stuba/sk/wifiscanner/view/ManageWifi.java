@@ -8,16 +8,15 @@ import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import java.util.List;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
 import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
-import wifi.mobv.fei.stuba.sk.wifiscanner.model.wifi.WifiScanAdapter;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.LocationAdapter;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Location;
+import wifi.mobv.fei.stuba.sk.wifiscanner.model.wifi.WifiScanAdapter;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.wifi.WifiScanner;
 
 /**

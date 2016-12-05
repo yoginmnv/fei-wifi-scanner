@@ -58,11 +58,11 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener,
 
 		Intent i = getIntent();
 		memberID = Long.parseLong(i.getStringExtra("memberID"));
+		locationID = Long.parseLong(i.getStringExtra("memberLocation"));
 		tv_ssid.setText(i.getStringExtra("memberSSID"));
 		tv_bssid.setText(i.getStringExtra("memberBSSID"));
 
-		// treba overit ci to funguje a co sa vlastne posiela do memberLocation
-		s_blockFloor.setSelection((int)adapter.getItemId(Integer.parseInt(i.getStringExtra("memberLocation")))-1);
+		s_blockFloor.setSelection(getIndex(s_blockFloor, locationID));
 
 		b_update.setOnClickListener(this);
 		b_delete.setOnClickListener(this);
@@ -74,7 +74,8 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener,
 		switch( v.getId() )
 		{
 			case R.id.b_wifiUpdate_update:
-				wifiDAO.update(new Wifi(memberID, locationID, tv_bssid.getText().toString()));
+				Location l = (Location)s_blockFloor.getSelectedItem();
+				wifiDAO.update(new Wifi(memberID, l.getId(), tv_bssid.getText().toString()));
 				break;
 
 			case R.id.b_wifiUpdate_delete:
@@ -98,5 +99,19 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener,
 	public void onNothingSelected(AdapterView<?> adapterView)
 	{
 
+	}
+
+	private int getIndex(Spinner spinner, long id)
+	{
+		for( int i = 0; i < spinner.getCount(); ++i )
+		{
+			Location location = (Location)spinner.getItemAtPosition(i);
+			if( location.getId() == id )
+			{
+				return i;
+			}
+		}
+
+		return 0;
 	}
 }

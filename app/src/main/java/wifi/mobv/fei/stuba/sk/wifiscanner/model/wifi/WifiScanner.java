@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import wifi.mobv.fei.stuba.sk.wifiscanner.R;
+import wifi.mobv.fei.stuba.sk.wifiscanner.controller.SQLController;
 import wifi.mobv.fei.stuba.sk.wifiscanner.model.db.Wifi;
 import wifi.mobv.fei.stuba.sk.wifiscanner.view.ManageWifi;
 
@@ -31,31 +32,14 @@ public class WifiScanner {
     private WifiManager wifiManager;
     private WifiScanReceiver receiverWifi;
     private List<Wifi> wifiList;
+    private SQLController sqlController;
 
     private int signalLevel = 0;
     private long scanDelay = 10000; // min scan delay 10 sec
 
     private ManageWifi manageWifiActivity;
-    private long idLocation;
+
     private boolean localizing = false;
-
-    public WifiScanner(Context context)
-    {
-        handler = new Handler();
-        // manage all aspects of WIFI connectivity
-        wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        // enable automatic wifi
-        if( wifiManager.isWifiEnabled() == false )
-        {
-            wifiManager.setWifiEnabled(true);
-        }
-
-        receiverWifi = new WifiScanReceiver();
-        context.registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-
-
-        wifiManager.startScan();
-    }
 
     public WifiScanner(ManageWifi activity)
     {
@@ -64,10 +48,6 @@ public class WifiScanner {
 
         // Set values
         manageWifiActivity = activity;
-
-        // Default ID for location
-        // Used to initialize default value for Location ID in scanned Wifi object
-        idLocation = -1;
 
         // Manage all aspects of Wi-Fi connectivity
         wifiManager = (WifiManager) manageWifiActivity.getSystemService(Context.WIFI_SERVICE);
@@ -80,6 +60,8 @@ public class WifiScanner {
         }
 
         receiverWifi = new WifiScanReceiver();
+
+        sqlController = new SQLController(activity);
 
         handler = new Handler();
         runnable = new Runnable()
@@ -120,7 +102,9 @@ public class WifiScanner {
 
             // Iterate through scans and create data
             for (ScanResult res : wifiManager.getScanResults()) {
-                Wifi wifiScan = new Wifi(idLocation, res.BSSID, res.SSID, res.level);
+                // Get the location ID of Wi-FI scan, if the network is saved in database
+                long locationId = sqlController.getWifiDAO().findWifiLocationId(res.BSSID);
+                Wifi wifiScan = new Wifi(locationId, res.BSSID, res.SSID, res.level);
                 wifiList.add(wifiScan);
 
                 System.out.println(wifiScan.getSSID()+ " - " + wifiScan.getBSSID());
@@ -175,6 +159,4 @@ public class WifiScanner {
     {
         return wifiList;
     }
-
-    public void setIdLocation(long idLocation) { this.idLocation = idLocation; }
 }

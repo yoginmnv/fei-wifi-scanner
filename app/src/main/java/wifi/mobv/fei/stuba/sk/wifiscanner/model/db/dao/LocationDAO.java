@@ -64,20 +64,24 @@ public class LocationDAO
 		{
 			if( c.moveToFirst() )
 			{
+                Location l = new Location();
+				l.setId(c.getLong(c.getColumnIndex(LocationEntry._ID)));
+				l.setBlockName(c.getString(c.getColumnIndex(LocationEntry.COLUMN_NAME_BLOCK_NAME)));
+				l.setFloor(c.getString(c.getColumnIndex(LocationEntry.COLUMN_NAME_FLOOR)));
 
+                c.close();
+
+                return l;
 			}
 			else
 			{
 				Log.w(TAG, "Location not found");
 			}
+
+            c.close();
 		}
 
-		Location l = new Location();
-		l.setId(c.getLong(c.getColumnIndex(LocationEntry._ID)));
-		l.setBlockName(c.getString(c.getColumnIndex(LocationEntry.COLUMN_NAME_BLOCK_NAME)));
-		l.setFloor(c.getString(c.getColumnIndex(LocationEntry.COLUMN_NAME_FLOOR)));
-
-		return l;
+		return null;
 	}
 
 	public Cursor readData()
