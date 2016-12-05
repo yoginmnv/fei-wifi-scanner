@@ -52,7 +52,8 @@ public class SavedWifi extends AppCompatActivity implements AdapterView.OnItemSe
                 TextView memID_tv = (TextView) view.findViewById(R.id.tv_wifi_saved_id);
 
                 String memberID_val = memID_tv.getText().toString();
-                Cursor cursor = SQLController.getInstance(SavedWifi.this).readDataById(memberID_val);
+
+                Cursor cursor = SQLController.getInstance(SavedWifi.this).open().readDataById(memberID_val);
 
                 Intent modify_intent = new Intent(getApplicationContext(), UpdateWifi.class);
                 modify_intent.putExtra("memberID", memberID_val);
