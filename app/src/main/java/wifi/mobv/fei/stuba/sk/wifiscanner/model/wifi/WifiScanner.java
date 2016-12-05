@@ -142,6 +142,7 @@ public class WifiScanner
 				}
 
 				locateMe = false;
+				activity.unregisterReceiver(receiverWifi);
 			}
 			else
 			{
