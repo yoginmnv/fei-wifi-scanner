@@ -104,7 +104,7 @@ public class WifiDAO
 		}
 	}
 
-	public Wifi read(long wifiID)
+	public Cursor read(long wifiID)
 	{
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -128,10 +128,14 @@ public class WifiDAO
 				null                                 // The sort order
 		);
 
-		cursor.moveToFirst();
-		long itemId = cursor.getLong(cursor.getColumnIndexOrThrow(WifiEntry._ID));
+		if( cursor != null )
+		{
+			cursor.moveToFirst();
 
-		return new Wifi();
+			return cursor;
+		}
+
+		return null;
 	}
 
 	public List<Wifi> readAll()
