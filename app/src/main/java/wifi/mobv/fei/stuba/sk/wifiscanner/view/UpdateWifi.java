@@ -32,6 +32,7 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener,
 	private TextView tv_ssid;
 	private TextView tv_bssid;
 	private Spinner s_blockFloor;
+	private TextView tv_level;
 	private Button b_update;
 	private Button b_delete;
 	private long memberID;
@@ -48,6 +49,7 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener,
 		tv_ssid = (TextView)findViewById(R.id.tv_wifiUpdate_ssid);
 		tv_bssid = (TextView)findViewById(R.id.tv_wifiUpdate_bssid);
 		s_blockFloor = (Spinner)findViewById(R.id.s_wifiUpdate_blockFloor);
+		tv_level = (TextView)findViewById(R.id.tv_wifiUpdate_level);
 		b_update = (Button)findViewById(R.id.b_wifiUpdate_update);
 		b_delete = (Button)findViewById(R.id.b_wifiUpdate_delete);
 
@@ -59,8 +61,9 @@ public class UpdateWifi extends AppCompatActivity implements OnClickListener,
 		Intent i = getIntent();
 		memberID = Long.parseLong(i.getStringExtra("memberID"));
 		locationID = Long.parseLong(i.getStringExtra("memberLocation"));
-		tv_ssid.setText(i.getStringExtra("memberSSID"));
-		tv_bssid.setText(i.getStringExtra("memberBSSID"));
+		tv_ssid.setText("SSID: " + i.getStringExtra("memberSSID"));
+		tv_bssid.setText("BSSID: " + i.getStringExtra("memberBSSID"));
+		tv_level.setText("Signal: " + i.getStringExtra("memberSignal"));
 
 		s_blockFloor.setSelection(getIndex(s_blockFloor, locationID));
 

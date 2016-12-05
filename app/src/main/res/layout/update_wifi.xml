@@ -15,13 +15,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <Spinner
-        android:id="@+id/s_wifiUpdate_blockFloor"
+    <TextView
+        android:id="@+id/tv_wifiUpdate_level"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </Spinner>
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select block and floor "/>
+
+        <Spinner
+            android:id="@+id/s_wifiUpdate_blockFloor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
