@@ -51,7 +51,7 @@ public class WifiScanner
     private long idLocation;
     private MainActivity activity;
 	private boolean locateMe = false;
-
+	private TextView tvPosition;
     public WifiScanner(MainActivity context)
     {
         activity = context;
@@ -67,7 +67,10 @@ public class WifiScanner
 
         receiverWifi = new WifiScanReceiver();
         context.registerReceiver(receiverWifi, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-		((TextView)manageWifiActivity.findViewById(R.id.tv_main_locationResult)).setText("Retriving location");
+
+		tvPosition = (TextView)activity.findViewById(R.id.tv_main_locationResult);
+		tvPosition.setText("Retriving location");
+
         wifiManager.startScan();
     }
 
@@ -128,7 +131,16 @@ public class WifiScanner
 			if( locateMe )
 			{
 				Location l = SQLController.getInstance(activity).getWifiDAO().locateMe(wifiManager.getScanResults());
-				((TextView)activity.findViewById(R.id.tv_main_locationResult)).setText("Nachadzate sa na " + l.getBlockName() + l.getFloor());
+
+				if( l == null )
+				{
+					tvPosition.setText("Position unknown");
+				}
+				else
+				{
+					tvPosition.setText("You are on " + l.getBlockName() + l.getFloor());
+				}
+
 				locateMe = false;
 			}
 			else
