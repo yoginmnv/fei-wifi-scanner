@@ -138,6 +138,42 @@ public class WifiDAO
 		return null;
 	}
 
+	// Find location ID for Wi-Fi network by unique BSSID attribute
+	public long findWifiLocationId(String BSSID)
+	{
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+		// Define a projection that specifies which columns from the database
+		// you will actually use after this query.
+		String[] projection = {WifiEntry.COLUMN_NAME_ID_LOCATION};
+
+		// Filter results WHERE "title" = 'My Title'
+		String selection = WifiEntry.COLUMN_NAME_BSSID + " = ?";
+		String[] selectionArgs = {BSSID};
+
+		Cursor cursor = db.query(WifiEntry.TABLE_NAME,        // The table to query
+				projection,                               // The columns to return
+				selection,                                // The columns for the WHERE clause
+				selectionArgs,                            // The values for the WHERE clause
+				null,                                     // don't group the rows
+				null,                                     // don't filter by row groups
+				null                                 // The sort order
+		);
+
+		// If Wi-Fi network is not stored in database, the default value -1 will be returned
+		long locationId = -1;
+		if( cursor != null )
+		{
+			if (cursor.moveToFirst())
+				locationId = cursor.getLong(cursor.getColumnIndex(WifiEntry.COLUMN_NAME_ID_LOCATION));
+
+			cursor.close();
+		}
+
+		return locationId;
+	}
+
+
 	public List<Wifi> readAll()
 	{
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
